@@ -1,0 +1,3758 @@
+{
+  "version": "1.0.0",
+  "stats": {
+    "totalAnimations": 77,
+    "totalPacks": 3,
+    "packBreakdown": {
+      "Root": 32,
+      "Farming Pack": 25,
+      "Male Injured Pack": 20
+    },
+    "categoryBreakdown": {
+      "SOCIAL": 14,
+      "SURVIVAL": 6,
+      "TRANSITION": 5,
+      "FARMING": 25,
+      "INJURED": 20,
+      "LOCOMOTION": 3,
+      "SWIMMING": 2,
+      "INTERACTION": 1,
+      "GENERAL": 1
+    },
+    "actionBreakdown": {
+      "EXPRESS": 7,
+      "IDLE": 1,
+      "DRINK": 2,
+      "FALL": 1,
+      "CARRY": 8,
+      "MILK_COW": 1,
+      "PLANT_CROP": 3,
+      "KNEEL": 1,
+      "HARVEST_CROP": 5,
+      "WATER_CROP": 2,
+      "WHEELBARROW_WORK": 6,
+      "SLEEP": 2,
+      "INJURED_ACTION": 6,
+      "INJURED_IDLE": 3,
+      "INJURED_RUN": 7,
+      "GO_TO": 14,
+      "INJURED_WALK": 4,
+      "REST": 1,
+      "SIT": 1,
+      "GREETING": 3,
+      "RUN": 2,
+      "MISC_ACTION": 1,
+      "TALK": 4,
+      "STAND_UP": 4,
+      "SWIM": 1,
+      "THROW": 1,
+      "WALK": 1
+    },
+    "usageBreakdown": {
+      "AVAILABLE_AND_USED": 8,
+      "AVAILABLE_NOT_CURRENTLY_USED": 69
+    },
+    "scannedAt": "2026-08-19T09:51:26.026Z"
+  },
+  "animations": [
+    {
+      "id": "agreeing",
+      "file": "Agreeing.fbx",
+      "name": "Agreeing",
+      "pack": "Root",
+      "category": "SOCIAL",
+      "description": "Character animation: Agreeing",
+      "actions": [
+        "EXPRESS"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 4.7,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "social",
+        "express",
+        "agreeing",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "clapping",
+        "laughing",
+        "pointing_back",
+        "pointing",
+        "shaking_head_no",
+        "thankful"
+      ]
+    },
+    {
+      "id": "breathing_idle",
+      "file": "Breathing Idle.fbx",
+      "name": "Breathing Idle",
+      "pack": "Root",
+      "category": "SURVIVAL",
+      "description": "Character animation: Breathing Idle",
+      "actions": [
+        "IDLE"
+      ],
+      "states": [
+        "IDLE"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 9.93,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "survival",
+        "idle",
+        "breathing",
+        "root"
+      ],
+      "status": "AVAILABLE_AND_USED",
+      "variants": []
+    },
+    {
+      "id": "clapping",
+      "file": "Clapping.fbx",
+      "name": "Clapping",
+      "pack": "Root",
+      "category": "SOCIAL",
+      "description": "Character animation: Clapping",
+      "actions": [
+        "EXPRESS"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": false,
+      "duration": 1.17,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "social",
+        "express",
+        "clapping",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "agreeing",
+        "laughing",
+        "pointing_back",
+        "pointing",
+        "shaking_head_no",
+        "thankful"
+      ]
+    },
+    {
+      "id": "drinking",
+      "file": "Drinking.fbx",
+      "name": "Drinking",
+      "pack": "Root",
+      "category": "SURVIVAL",
+      "description": "Character animation: Drinking",
+      "actions": [
+        "DRINK"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 8.87,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "survival",
+        "drink",
+        "drinking",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "sitting_drinking"
+      ]
+    },
+    {
+      "id": "fall_flat",
+      "file": "Fall Flat.fbx",
+      "name": "Fall Flat",
+      "pack": "Root",
+      "category": "TRANSITION",
+      "description": "Character animation: Fall Flat",
+      "actions": [
+        "FALL"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "TRANSITION",
+      "rootMotion": true,
+      "duration": 2.53,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "transition",
+        "fall",
+        "flat",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": []
+    },
+    {
+      "id": "farming_pack_box_idle",
+      "file": "Farming Pack/box idle.fbx",
+      "name": "box idle",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs box idle",
+      "actions": [
+        "CARRY"
+      ],
+      "states": [
+        "FARMING",
+        "IDLE"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 6.3,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "carry",
+        "box",
+        "idle",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_box_turn_2",
+        "farming_pack_box_turn",
+        "farming_pack_box_walk_arc",
+        "farming_pack_holding_idle",
+        "farming_pack_holding_turn_left",
+        "farming_pack_holding_turn_right",
+        "farming_pack_holding_walk"
+      ]
+    },
+    {
+      "id": "farming_pack_box_turn_2",
+      "file": "Farming Pack/box turn (2).fbx",
+      "name": "box turn (2)",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs box turn (2)",
+      "actions": [
+        "CARRY"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 1.17,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "carry",
+        "box",
+        "turn",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_box_idle",
+        "farming_pack_box_turn",
+        "farming_pack_box_walk_arc",
+        "farming_pack_holding_idle",
+        "farming_pack_holding_turn_left",
+        "farming_pack_holding_turn_right",
+        "farming_pack_holding_walk"
+      ]
+    },
+    {
+      "id": "farming_pack_box_turn",
+      "file": "Farming Pack/box turn.fbx",
+      "name": "box turn",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs box turn",
+      "actions": [
+        "CARRY"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 1.53,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "carry",
+        "box",
+        "turn",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_box_idle",
+        "farming_pack_box_turn_2",
+        "farming_pack_box_walk_arc",
+        "farming_pack_holding_idle",
+        "farming_pack_holding_turn_left",
+        "farming_pack_holding_turn_right",
+        "farming_pack_holding_walk"
+      ]
+    },
+    {
+      "id": "farming_pack_box_walk_arc",
+      "file": "Farming Pack/box walk arc.fbx",
+      "name": "box walk arc",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs box walk arc",
+      "actions": [
+        "CARRY"
+      ],
+      "states": [
+        "FARMING",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 1.23,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "carry",
+        "box",
+        "walk",
+        "arc",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_box_idle",
+        "farming_pack_box_turn_2",
+        "farming_pack_box_turn",
+        "farming_pack_holding_idle",
+        "farming_pack_holding_turn_left",
+        "farming_pack_holding_turn_right",
+        "farming_pack_holding_walk"
+      ]
+    },
+    {
+      "id": "farming_pack_cow_milking",
+      "file": "Farming Pack/cow milking.fbx",
+      "name": "cow milking",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs cow milking",
+      "actions": [
+        "MILK_COW"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 4.53,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "milk",
+        "cow",
+        "milking",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": []
+    },
+    {
+      "id": "farming_pack_dig_and_plant_seeds",
+      "file": "Farming Pack/dig and plant seeds.fbx",
+      "name": "dig and plant seeds",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs dig and plant seeds",
+      "actions": [
+        "PLANT_CROP"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": false,
+      "duration": 2,
+      "fps": 30,
+      "trackCount": 0,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "plant",
+        "crop",
+        "dig",
+        "and",
+        "seeds",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_AND_USED",
+      "variants": [
+        "farming_pack_plant_a_plant",
+        "farming_pack_plant_tree"
+      ]
+    },
+    {
+      "id": "farming_pack_holding_idle",
+      "file": "Farming Pack/holding idle.fbx",
+      "name": "holding idle",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs holding idle",
+      "actions": [
+        "CARRY"
+      ],
+      "states": [
+        "FARMING",
+        "IDLE"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 6,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "carry",
+        "holding",
+        "idle",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_box_idle",
+        "farming_pack_box_turn_2",
+        "farming_pack_box_turn",
+        "farming_pack_box_walk_arc",
+        "farming_pack_holding_turn_left",
+        "farming_pack_holding_turn_right",
+        "farming_pack_holding_walk"
+      ]
+    },
+    {
+      "id": "farming_pack_holding_turn_left",
+      "file": "Farming Pack/holding turn left.fbx",
+      "name": "holding turn left",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs holding turn left",
+      "actions": [
+        "CARRY"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 1.2,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "carry",
+        "holding",
+        "turn",
+        "left",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_box_idle",
+        "farming_pack_box_turn_2",
+        "farming_pack_box_turn",
+        "farming_pack_box_walk_arc",
+        "farming_pack_holding_idle",
+        "farming_pack_holding_turn_right",
+        "farming_pack_holding_walk"
+      ]
+    },
+    {
+      "id": "farming_pack_holding_turn_right",
+      "file": "Farming Pack/holding turn right.fbx",
+      "name": "holding turn right",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs holding turn right",
+      "actions": [
+        "CARRY"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 1.3,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "carry",
+        "holding",
+        "turn",
+        "right",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_box_idle",
+        "farming_pack_box_turn_2",
+        "farming_pack_box_turn",
+        "farming_pack_box_walk_arc",
+        "farming_pack_holding_idle",
+        "farming_pack_holding_turn_left",
+        "farming_pack_holding_walk"
+      ]
+    },
+    {
+      "id": "farming_pack_holding_walk",
+      "file": "Farming Pack/holding walk.fbx",
+      "name": "holding walk",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs holding walk",
+      "actions": [
+        "CARRY"
+      ],
+      "states": [
+        "FARMING",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 1.37,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "carry",
+        "holding",
+        "walk",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_box_idle",
+        "farming_pack_box_turn_2",
+        "farming_pack_box_turn",
+        "farming_pack_box_walk_arc",
+        "farming_pack_holding_idle",
+        "farming_pack_holding_turn_left",
+        "farming_pack_holding_turn_right"
+      ]
+    },
+    {
+      "id": "farming_pack_kneeling_idle",
+      "file": "Farming Pack/kneeling idle.fbx",
+      "name": "kneeling idle",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs kneeling idle",
+      "actions": [
+        "KNEEL"
+      ],
+      "states": [
+        "FARMING",
+        "IDLE"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 4.27,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "kneel",
+        "kneeling",
+        "idle",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": []
+    },
+    {
+      "id": "farming_pack_pick_fruit_2",
+      "file": "Farming Pack/pick fruit (2).fbx",
+      "name": "pick fruit (2)",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs pick fruit (2)",
+      "actions": [
+        "HARVEST_CROP"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 6.2,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "harvest",
+        "crop",
+        "pick",
+        "fruit",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_pick_fruit_3",
+        "farming_pack_pick_fruit",
+        "farming_pack_pull_plant_2",
+        "farming_pack_pull_plant"
+      ]
+    },
+    {
+      "id": "farming_pack_pick_fruit_3",
+      "file": "Farming Pack/pick fruit (3).fbx",
+      "name": "pick fruit (3)",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs pick fruit (3)",
+      "actions": [
+        "HARVEST_CROP"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 7.1,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "harvest",
+        "crop",
+        "pick",
+        "fruit",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_pick_fruit_2",
+        "farming_pack_pick_fruit",
+        "farming_pack_pull_plant_2",
+        "farming_pack_pull_plant"
+      ]
+    },
+    {
+      "id": "farming_pack_pick_fruit",
+      "file": "Farming Pack/pick fruit.fbx",
+      "name": "pick fruit",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs pick fruit",
+      "actions": [
+        "HARVEST_CROP"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 8,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "harvest",
+        "crop",
+        "pick",
+        "fruit",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_AND_USED",
+      "variants": [
+        "farming_pack_pick_fruit_2",
+        "farming_pack_pick_fruit_3",
+        "farming_pack_pull_plant_2",
+        "farming_pack_pull_plant"
+      ]
+    },
+    {
+      "id": "farming_pack_plant_a_plant",
+      "file": "Farming Pack/plant a plant.fbx",
+      "name": "plant a plant",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs plant a plant",
+      "actions": [
+        "PLANT_CROP"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 7.57,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "plant",
+        "crop",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_dig_and_plant_seeds",
+        "farming_pack_plant_tree"
+      ]
+    },
+    {
+      "id": "farming_pack_plant_tree",
+      "file": "Farming Pack/plant tree.fbx",
+      "name": "plant tree",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs plant tree",
+      "actions": [
+        "PLANT_CROP"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 9.27,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "plant",
+        "crop",
+        "tree",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_dig_and_plant_seeds",
+        "farming_pack_plant_a_plant"
+      ]
+    },
+    {
+      "id": "farming_pack_pull_plant_2",
+      "file": "Farming Pack/pull plant (2).fbx",
+      "name": "pull plant (2)",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs pull plant (2)",
+      "actions": [
+        "HARVEST_CROP"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 4.73,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "harvest",
+        "crop",
+        "pull",
+        "plant",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_pick_fruit_2",
+        "farming_pack_pick_fruit_3",
+        "farming_pack_pick_fruit",
+        "farming_pack_pull_plant"
+      ]
+    },
+    {
+      "id": "farming_pack_pull_plant",
+      "file": "Farming Pack/pull plant.fbx",
+      "name": "pull plant",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs pull plant",
+      "actions": [
+        "HARVEST_CROP"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 4.67,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "harvest",
+        "crop",
+        "pull",
+        "plant",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_pick_fruit_2",
+        "farming_pack_pick_fruit_3",
+        "farming_pack_pick_fruit",
+        "farming_pack_pull_plant_2"
+      ]
+    },
+    {
+      "id": "farming_pack_watering",
+      "file": "Farming Pack/watering.fbx",
+      "name": "watering",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs watering",
+      "actions": [
+        "WATER_CROP"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 5.6,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "water",
+        "crop",
+        "watering",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_AND_USED",
+      "variants": [
+        "treading_water"
+      ]
+    },
+    {
+      "id": "farming_pack_wheelbarrow_dump",
+      "file": "Farming Pack/wheelbarrow dump.fbx",
+      "name": "wheelbarrow dump",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs wheelbarrow dump",
+      "actions": [
+        "WHEELBARROW_WORK"
+      ],
+      "states": [
+        "FARMING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 6.23,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "wheelbarrow",
+        "work",
+        "dump",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_wheelbarrow_idle",
+        "farming_pack_wheelbarrow_walk_2",
+        "farming_pack_wheelbarrow_walk_turn_2",
+        "farming_pack_wheelbarrow_walk_turn",
+        "farming_pack_wheelbarrow_walk"
+      ]
+    },
+    {
+      "id": "farming_pack_wheelbarrow_idle",
+      "file": "Farming Pack/wheelbarrow idle.fbx",
+      "name": "wheelbarrow idle",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs wheelbarrow idle",
+      "actions": [
+        "WHEELBARROW_WORK"
+      ],
+      "states": [
+        "FARMING",
+        "IDLE"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": false,
+      "duration": 1.5,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "wheelbarrow",
+        "work",
+        "idle",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_wheelbarrow_dump",
+        "farming_pack_wheelbarrow_walk_2",
+        "farming_pack_wheelbarrow_walk_turn_2",
+        "farming_pack_wheelbarrow_walk_turn",
+        "farming_pack_wheelbarrow_walk"
+      ]
+    },
+    {
+      "id": "farming_pack_wheelbarrow_walk_2",
+      "file": "Farming Pack/wheelbarrow walk (2).fbx",
+      "name": "wheelbarrow walk (2)",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs wheelbarrow walk (2)",
+      "actions": [
+        "WHEELBARROW_WORK"
+      ],
+      "states": [
+        "FARMING",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 0.97,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "wheelbarrow",
+        "work",
+        "walk",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_wheelbarrow_dump",
+        "farming_pack_wheelbarrow_idle",
+        "farming_pack_wheelbarrow_walk_turn_2",
+        "farming_pack_wheelbarrow_walk_turn",
+        "farming_pack_wheelbarrow_walk"
+      ]
+    },
+    {
+      "id": "farming_pack_wheelbarrow_walk_turn_2",
+      "file": "Farming Pack/wheelbarrow walk turn (2).fbx",
+      "name": "wheelbarrow walk turn (2)",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs wheelbarrow walk turn (2)",
+      "actions": [
+        "WHEELBARROW_WORK"
+      ],
+      "states": [
+        "FARMING",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 1.07,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "wheelbarrow",
+        "work",
+        "walk",
+        "turn",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_wheelbarrow_dump",
+        "farming_pack_wheelbarrow_idle",
+        "farming_pack_wheelbarrow_walk_2",
+        "farming_pack_wheelbarrow_walk_turn",
+        "farming_pack_wheelbarrow_walk"
+      ]
+    },
+    {
+      "id": "farming_pack_wheelbarrow_walk_turn",
+      "file": "Farming Pack/wheelbarrow walk turn.fbx",
+      "name": "wheelbarrow walk turn",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs wheelbarrow walk turn",
+      "actions": [
+        "WHEELBARROW_WORK"
+      ],
+      "states": [
+        "FARMING",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 1.07,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "wheelbarrow",
+        "work",
+        "walk",
+        "turn",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_wheelbarrow_dump",
+        "farming_pack_wheelbarrow_idle",
+        "farming_pack_wheelbarrow_walk_2",
+        "farming_pack_wheelbarrow_walk_turn_2",
+        "farming_pack_wheelbarrow_walk"
+      ]
+    },
+    {
+      "id": "farming_pack_wheelbarrow_walk",
+      "file": "Farming Pack/wheelbarrow walk.fbx",
+      "name": "wheelbarrow walk",
+      "pack": "Farming Pack",
+      "category": "FARMING",
+      "description": "Farming action: Character performs wheelbarrow walk",
+      "actions": [
+        "WHEELBARROW_WORK"
+      ],
+      "states": [
+        "FARMING",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 0.97,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "farming",
+        "wheelbarrow",
+        "work",
+        "walk",
+        "farming_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "farming_pack_wheelbarrow_dump",
+        "farming_pack_wheelbarrow_idle",
+        "farming_pack_wheelbarrow_walk_2",
+        "farming_pack_wheelbarrow_walk_turn_2",
+        "farming_pack_wheelbarrow_walk_turn"
+      ]
+    },
+    {
+      "id": "laughing",
+      "file": "Laughing.fbx",
+      "name": "Laughing",
+      "pack": "Root",
+      "category": "SOCIAL",
+      "description": "Character animation: Laughing",
+      "actions": [
+        "EXPRESS"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 9.77,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "social",
+        "express",
+        "laughing",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "agreeing",
+        "clapping",
+        "pointing_back",
+        "pointing",
+        "shaking_head_no",
+        "thankful"
+      ]
+    },
+    {
+      "id": "laying_sleeping",
+      "file": "Laying Sleeping.fbx",
+      "name": "Laying Sleeping",
+      "pack": "Root",
+      "category": "SURVIVAL",
+      "description": "Character animation: Laying Sleeping",
+      "actions": [
+        "SLEEP"
+      ],
+      "states": [
+        "SLEEPING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 1.7,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "survival",
+        "sleep",
+        "laying",
+        "sleeping",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "sleeping_idle"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_backwards_turn_left",
+      "file": "Male Injured Pack/injured backwards turn left.fbx",
+      "name": "injured backwards turn left",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured backwards turn left",
+      "actions": [
+        "INJURED_ACTION"
+      ],
+      "states": [
+        "INJURED",
+        "LOCOMOTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 0.73,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "action",
+        "backwards",
+        "turn",
+        "left",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_backwards_turn_right",
+        "male_injured_pack_injured_standing_jump",
+        "male_injured_pack_injured_turn_left",
+        "male_injured_pack_injured_turn_right",
+        "male_injured_pack_injured_wave_idle"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_backwards_turn_right",
+      "file": "Male Injured Pack/injured backwards turn right.fbx",
+      "name": "injured backwards turn right",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured backwards turn right",
+      "actions": [
+        "INJURED_ACTION"
+      ],
+      "states": [
+        "INJURED",
+        "LOCOMOTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 0.7,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "action",
+        "backwards",
+        "turn",
+        "right",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_backwards_turn_left",
+        "male_injured_pack_injured_standing_jump",
+        "male_injured_pack_injured_turn_left",
+        "male_injured_pack_injured_turn_right",
+        "male_injured_pack_injured_wave_idle"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_hurting_idle",
+      "file": "Male Injured Pack/injured hurting idle.fbx",
+      "name": "injured hurting idle",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured hurting idle",
+      "actions": [
+        "INJURED_IDLE"
+      ],
+      "states": [
+        "INJURED",
+        "IDLE"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 6.03,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "idle",
+        "hurting",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_idle",
+        "male_injured_pack_injured_stumble_idle"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_idle",
+      "file": "Male Injured Pack/injured idle.fbx",
+      "name": "injured idle",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured idle",
+      "actions": [
+        "INJURED_IDLE"
+      ],
+      "states": [
+        "INJURED",
+        "IDLE"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 9.33,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "idle",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_hurting_idle",
+        "male_injured_pack_injured_stumble_idle"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_run_backwards_left_turn",
+      "file": "Male Injured Pack/injured run backwards left turn.fbx",
+      "name": "injured run backwards left turn",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured run backwards left turn",
+      "actions": [
+        "INJURED_RUN",
+        "GO_TO"
+      ],
+      "states": [
+        "INJURED",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 0.5,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "run",
+        "go",
+        "to",
+        "backwards",
+        "left",
+        "turn",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_run_backwards_right_turn",
+        "male_injured_pack_injured_run_backwards",
+        "male_injured_pack_injured_run_jump",
+        "male_injured_pack_injured_run_left_turn",
+        "male_injured_pack_injured_run_right_turn",
+        "male_injured_pack_injured_run",
+        "male_injured_pack_injured_walk_backwards",
+        "male_injured_pack_injured_walk_left_turn",
+        "male_injured_pack_injured_walk_right_turn",
+        "male_injured_pack_injured_walk",
+        "running_tired",
+        "running",
+        "walking"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_run_backwards_right_turn",
+      "file": "Male Injured Pack/injured run backwards right turn.fbx",
+      "name": "injured run backwards right turn",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured run backwards right turn",
+      "actions": [
+        "INJURED_RUN",
+        "GO_TO"
+      ],
+      "states": [
+        "INJURED",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 0.53,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "run",
+        "go",
+        "to",
+        "backwards",
+        "right",
+        "turn",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_run_backwards_left_turn",
+        "male_injured_pack_injured_run_backwards",
+        "male_injured_pack_injured_run_jump",
+        "male_injured_pack_injured_run_left_turn",
+        "male_injured_pack_injured_run_right_turn",
+        "male_injured_pack_injured_run",
+        "male_injured_pack_injured_walk_backwards",
+        "male_injured_pack_injured_walk_left_turn",
+        "male_injured_pack_injured_walk_right_turn",
+        "male_injured_pack_injured_walk",
+        "running_tired",
+        "running",
+        "walking"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_run_backwards",
+      "file": "Male Injured Pack/injured run backwards.fbx",
+      "name": "injured run backwards",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured run backwards",
+      "actions": [
+        "INJURED_RUN",
+        "GO_TO"
+      ],
+      "states": [
+        "INJURED",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 0.6,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "run",
+        "go",
+        "to",
+        "backwards",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_run_backwards_left_turn",
+        "male_injured_pack_injured_run_backwards_right_turn",
+        "male_injured_pack_injured_run_jump",
+        "male_injured_pack_injured_run_left_turn",
+        "male_injured_pack_injured_run_right_turn",
+        "male_injured_pack_injured_run",
+        "male_injured_pack_injured_walk_backwards",
+        "male_injured_pack_injured_walk_left_turn",
+        "male_injured_pack_injured_walk_right_turn",
+        "male_injured_pack_injured_walk",
+        "running_tired",
+        "running",
+        "walking"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_run_jump",
+      "file": "Male Injured Pack/injured run jump.fbx",
+      "name": "injured run jump",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured run jump",
+      "actions": [
+        "INJURED_RUN",
+        "GO_TO"
+      ],
+      "states": [
+        "INJURED",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 0.73,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "run",
+        "go",
+        "to",
+        "jump",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_run_backwards_left_turn",
+        "male_injured_pack_injured_run_backwards_right_turn",
+        "male_injured_pack_injured_run_backwards",
+        "male_injured_pack_injured_run_left_turn",
+        "male_injured_pack_injured_run_right_turn",
+        "male_injured_pack_injured_run",
+        "male_injured_pack_injured_walk_backwards",
+        "male_injured_pack_injured_walk_left_turn",
+        "male_injured_pack_injured_walk_right_turn",
+        "male_injured_pack_injured_walk",
+        "running_tired",
+        "running",
+        "walking"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_run_left_turn",
+      "file": "Male Injured Pack/injured run left turn.fbx",
+      "name": "injured run left turn",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured run left turn",
+      "actions": [
+        "INJURED_RUN",
+        "GO_TO"
+      ],
+      "states": [
+        "INJURED",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 0.6,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "run",
+        "go",
+        "to",
+        "left",
+        "turn",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_run_backwards_left_turn",
+        "male_injured_pack_injured_run_backwards_right_turn",
+        "male_injured_pack_injured_run_backwards",
+        "male_injured_pack_injured_run_jump",
+        "male_injured_pack_injured_run_right_turn",
+        "male_injured_pack_injured_run",
+        "male_injured_pack_injured_walk_backwards",
+        "male_injured_pack_injured_walk_left_turn",
+        "male_injured_pack_injured_walk_right_turn",
+        "male_injured_pack_injured_walk",
+        "running_tired",
+        "running",
+        "walking"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_run_right_turn",
+      "file": "Male Injured Pack/injured run right turn.fbx",
+      "name": "injured run right turn",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured run right turn",
+      "actions": [
+        "INJURED_RUN",
+        "GO_TO"
+      ],
+      "states": [
+        "INJURED",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 0.63,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "run",
+        "go",
+        "to",
+        "right",
+        "turn",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_run_backwards_left_turn",
+        "male_injured_pack_injured_run_backwards_right_turn",
+        "male_injured_pack_injured_run_backwards",
+        "male_injured_pack_injured_run_jump",
+        "male_injured_pack_injured_run_left_turn",
+        "male_injured_pack_injured_run",
+        "male_injured_pack_injured_walk_backwards",
+        "male_injured_pack_injured_walk_left_turn",
+        "male_injured_pack_injured_walk_right_turn",
+        "male_injured_pack_injured_walk",
+        "running_tired",
+        "running",
+        "walking"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_run",
+      "file": "Male Injured Pack/injured run.fbx",
+      "name": "injured run",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured run",
+      "actions": [
+        "INJURED_RUN",
+        "GO_TO"
+      ],
+      "states": [
+        "INJURED",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 0.63,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "run",
+        "go",
+        "to",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_run_backwards_left_turn",
+        "male_injured_pack_injured_run_backwards_right_turn",
+        "male_injured_pack_injured_run_backwards",
+        "male_injured_pack_injured_run_jump",
+        "male_injured_pack_injured_run_left_turn",
+        "male_injured_pack_injured_run_right_turn",
+        "male_injured_pack_injured_walk_backwards",
+        "male_injured_pack_injured_walk_left_turn",
+        "male_injured_pack_injured_walk_right_turn",
+        "male_injured_pack_injured_walk",
+        "running_tired",
+        "running",
+        "walking"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_standing_jump",
+      "file": "Male Injured Pack/injured standing jump.fbx",
+      "name": "injured standing jump",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured standing jump",
+      "actions": [
+        "INJURED_ACTION"
+      ],
+      "states": [
+        "INJURED"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 1.9,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "action",
+        "standing",
+        "jump",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_backwards_turn_left",
+        "male_injured_pack_injured_backwards_turn_right",
+        "male_injured_pack_injured_turn_left",
+        "male_injured_pack_injured_turn_right",
+        "male_injured_pack_injured_wave_idle"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_stumble_idle",
+      "file": "Male Injured Pack/injured stumble idle.fbx",
+      "name": "injured stumble idle",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured stumble idle",
+      "actions": [
+        "INJURED_IDLE"
+      ],
+      "states": [
+        "INJURED",
+        "IDLE"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 5.07,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "idle",
+        "stumble",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_hurting_idle",
+        "male_injured_pack_injured_idle"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_turn_left",
+      "file": "Male Injured Pack/injured turn left.fbx",
+      "name": "injured turn left",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured turn left",
+      "actions": [
+        "INJURED_ACTION"
+      ],
+      "states": [
+        "INJURED"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 0.9,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "action",
+        "turn",
+        "left",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_backwards_turn_left",
+        "male_injured_pack_injured_backwards_turn_right",
+        "male_injured_pack_injured_standing_jump",
+        "male_injured_pack_injured_turn_right",
+        "male_injured_pack_injured_wave_idle"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_turn_right",
+      "file": "Male Injured Pack/injured turn right.fbx",
+      "name": "injured turn right",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured turn right",
+      "actions": [
+        "INJURED_ACTION"
+      ],
+      "states": [
+        "INJURED"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 0.7,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "action",
+        "turn",
+        "right",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_backwards_turn_left",
+        "male_injured_pack_injured_backwards_turn_right",
+        "male_injured_pack_injured_standing_jump",
+        "male_injured_pack_injured_turn_left",
+        "male_injured_pack_injured_wave_idle"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_walk_backwards",
+      "file": "Male Injured Pack/injured walk backwards.fbx",
+      "name": "injured walk backwards",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured walk backwards",
+      "actions": [
+        "INJURED_WALK",
+        "GO_TO"
+      ],
+      "states": [
+        "INJURED",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 1.67,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "walk",
+        "go",
+        "to",
+        "backwards",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_walk_left_turn",
+        "male_injured_pack_injured_walk_right_turn",
+        "male_injured_pack_injured_walk",
+        "male_injured_pack_injured_run_backwards_left_turn",
+        "male_injured_pack_injured_run_backwards_right_turn",
+        "male_injured_pack_injured_run_backwards",
+        "male_injured_pack_injured_run_jump",
+        "male_injured_pack_injured_run_left_turn",
+        "male_injured_pack_injured_run_right_turn",
+        "male_injured_pack_injured_run",
+        "running_tired",
+        "running",
+        "walking"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_walk_left_turn",
+      "file": "Male Injured Pack/injured walk left turn.fbx",
+      "name": "injured walk left turn",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured walk left turn",
+      "actions": [
+        "INJURED_WALK",
+        "GO_TO"
+      ],
+      "states": [
+        "INJURED",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 2,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "walk",
+        "go",
+        "to",
+        "left",
+        "turn",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_walk_backwards",
+        "male_injured_pack_injured_walk_right_turn",
+        "male_injured_pack_injured_walk",
+        "male_injured_pack_injured_run_backwards_left_turn",
+        "male_injured_pack_injured_run_backwards_right_turn",
+        "male_injured_pack_injured_run_backwards",
+        "male_injured_pack_injured_run_jump",
+        "male_injured_pack_injured_run_left_turn",
+        "male_injured_pack_injured_run_right_turn",
+        "male_injured_pack_injured_run",
+        "running_tired",
+        "running",
+        "walking"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_walk_right_turn",
+      "file": "Male Injured Pack/injured walk right turn.fbx",
+      "name": "injured walk right turn",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured walk right turn",
+      "actions": [
+        "INJURED_WALK",
+        "GO_TO"
+      ],
+      "states": [
+        "INJURED",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 1.83,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "walk",
+        "go",
+        "to",
+        "right",
+        "turn",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_walk_backwards",
+        "male_injured_pack_injured_walk_left_turn",
+        "male_injured_pack_injured_walk",
+        "male_injured_pack_injured_run_backwards_left_turn",
+        "male_injured_pack_injured_run_backwards_right_turn",
+        "male_injured_pack_injured_run_backwards",
+        "male_injured_pack_injured_run_jump",
+        "male_injured_pack_injured_run_left_turn",
+        "male_injured_pack_injured_run_right_turn",
+        "male_injured_pack_injured_run",
+        "running_tired",
+        "running",
+        "walking"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_walk",
+      "file": "Male Injured Pack/injured walk.fbx",
+      "name": "injured walk",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured walk",
+      "actions": [
+        "INJURED_WALK",
+        "GO_TO"
+      ],
+      "states": [
+        "INJURED",
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 1.63,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "walk",
+        "go",
+        "to",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_walk_backwards",
+        "male_injured_pack_injured_walk_left_turn",
+        "male_injured_pack_injured_walk_right_turn",
+        "male_injured_pack_injured_run_backwards_left_turn",
+        "male_injured_pack_injured_run_backwards_right_turn",
+        "male_injured_pack_injured_run_backwards",
+        "male_injured_pack_injured_run_jump",
+        "male_injured_pack_injured_run_left_turn",
+        "male_injured_pack_injured_run_right_turn",
+        "male_injured_pack_injured_run",
+        "running_tired",
+        "running",
+        "walking"
+      ]
+    },
+    {
+      "id": "male_injured_pack_injured_wave_idle",
+      "file": "Male Injured Pack/injured wave idle.fbx",
+      "name": "injured wave idle",
+      "pack": "Male Injured Pack",
+      "category": "INJURED",
+      "description": "Injured movement/state: Character performs injured wave idle",
+      "actions": [
+        "INJURED_ACTION"
+      ],
+      "states": [
+        "INJURED",
+        "IDLE"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 5.07,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "injured",
+        "action",
+        "wave",
+        "idle",
+        "male_injured_pack"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_backwards_turn_left",
+        "male_injured_pack_injured_backwards_turn_right",
+        "male_injured_pack_injured_standing_jump",
+        "male_injured_pack_injured_turn_left",
+        "male_injured_pack_injured_turn_right"
+      ]
+    },
+    {
+      "id": "male_sitting_pose",
+      "file": "Male Sitting Pose.fbx",
+      "name": "Male Sitting Pose",
+      "pack": "Root",
+      "category": "SURVIVAL",
+      "description": "Character animation: Male Sitting Pose",
+      "actions": [
+        "REST",
+        "SIT"
+      ],
+      "states": [
+        "SITTING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": false,
+      "duration": 0.03,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "survival",
+        "rest",
+        "sit",
+        "male",
+        "sitting",
+        "pose",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": []
+    },
+    {
+      "id": "pointing_back",
+      "file": "Pointing-back.fbx",
+      "name": "Pointing-back",
+      "pack": "Root",
+      "category": "SOCIAL",
+      "description": "Character animation: Pointing-back",
+      "actions": [
+        "EXPRESS"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 3.6,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "social",
+        "express",
+        "pointing",
+        "back",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "agreeing",
+        "clapping",
+        "laughing",
+        "pointing",
+        "shaking_head_no",
+        "thankful"
+      ]
+    },
+    {
+      "id": "pointing",
+      "file": "Pointing.fbx",
+      "name": "Pointing",
+      "pack": "Root",
+      "category": "SOCIAL",
+      "description": "Character animation: Pointing",
+      "actions": [
+        "EXPRESS"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 2.77,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "social",
+        "express",
+        "pointing",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "agreeing",
+        "clapping",
+        "laughing",
+        "pointing_back",
+        "shaking_head_no",
+        "thankful"
+      ]
+    },
+    {
+      "id": "quick_formal_bow",
+      "file": "Quick Formal Bow.fbx",
+      "name": "Quick Formal Bow",
+      "pack": "Root",
+      "category": "SOCIAL",
+      "description": "Character animation: Quick Formal Bow",
+      "actions": [
+        "GREETING"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 2.73,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "social",
+        "greeting",
+        "quick",
+        "formal",
+        "bow",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "standing_greeting",
+        "waving"
+      ]
+    },
+    {
+      "id": "running_tired",
+      "file": "Running Tired.fbx",
+      "name": "Running Tired",
+      "pack": "Root",
+      "category": "LOCOMOTION",
+      "description": "Character animation: Running Tired",
+      "actions": [
+        "GO_TO",
+        "RUN"
+      ],
+      "states": [
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 7,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "locomotion",
+        "go",
+        "to",
+        "run",
+        "running",
+        "tired",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "male_injured_pack_injured_run_backwards_left_turn",
+        "male_injured_pack_injured_run_backwards_right_turn",
+        "male_injured_pack_injured_run_backwards",
+        "male_injured_pack_injured_run_jump",
+        "male_injured_pack_injured_run_left_turn",
+        "male_injured_pack_injured_run_right_turn",
+        "male_injured_pack_injured_run",
+        "male_injured_pack_injured_walk_backwards",
+        "male_injured_pack_injured_walk_left_turn",
+        "male_injured_pack_injured_walk_right_turn",
+        "male_injured_pack_injured_walk",
+        "running",
+        "walking"
+      ]
+    },
+    {
+      "id": "running",
+      "file": "Running.fbx",
+      "name": "Running",
+      "pack": "Root",
+      "category": "LOCOMOTION",
+      "description": "Character animation: Running",
+      "actions": [
+        "GO_TO",
+        "RUN"
+      ],
+      "states": [
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 0.63,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "locomotion",
+        "go",
+        "to",
+        "run",
+        "running",
+        "root"
+      ],
+      "status": "AVAILABLE_AND_USED",
+      "variants": [
+        "male_injured_pack_injured_run_backwards_left_turn",
+        "male_injured_pack_injured_run_backwards_right_turn",
+        "male_injured_pack_injured_run_backwards",
+        "male_injured_pack_injured_run_jump",
+        "male_injured_pack_injured_run_left_turn",
+        "male_injured_pack_injured_run_right_turn",
+        "male_injured_pack_injured_run",
+        "male_injured_pack_injured_walk_backwards",
+        "male_injured_pack_injured_walk_left_turn",
+        "male_injured_pack_injured_walk_right_turn",
+        "male_injured_pack_injured_walk",
+        "running_tired",
+        "walking"
+      ]
+    },
+    {
+      "id": "shaking_hands_2",
+      "file": "Shaking Hands 2.fbx",
+      "name": "Shaking Hands 2",
+      "pack": "Root",
+      "category": "SOCIAL",
+      "description": "Character animation: Shaking Hands 2",
+      "actions": [
+        "MISC_ACTION"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 4.37,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "social",
+        "misc",
+        "action",
+        "shaking",
+        "hands",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": []
+    },
+    {
+      "id": "shaking_head_no",
+      "file": "Shaking Head No.fbx",
+      "name": "Shaking Head No",
+      "pack": "Root",
+      "category": "SOCIAL",
+      "description": "Character animation: Shaking Head No",
+      "actions": [
+        "EXPRESS"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 1.8,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "social",
+        "express",
+        "shaking",
+        "head",
+        "no",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "agreeing",
+        "clapping",
+        "laughing",
+        "pointing_back",
+        "pointing",
+        "thankful"
+      ]
+    },
+    {
+      "id": "sitting_drinking",
+      "file": "Sitting Drinking.fbx",
+      "name": "Sitting Drinking",
+      "pack": "Root",
+      "category": "SURVIVAL",
+      "description": "Character animation: Sitting Drinking",
+      "actions": [
+        "DRINK"
+      ],
+      "states": [
+        "SITTING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 15.2,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "survival",
+        "drink",
+        "sitting",
+        "drinking",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "drinking"
+      ]
+    },
+    {
+      "id": "sitting_talking",
+      "file": "Sitting Talking.fbx",
+      "name": "Sitting Talking",
+      "pack": "Root",
+      "category": "SOCIAL",
+      "description": "Character animation: Sitting Talking",
+      "actions": [
+        "TALK"
+      ],
+      "states": [
+        "SITTING"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 44.07,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "social",
+        "talk",
+        "sitting",
+        "talking",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "talking_1",
+        "talking_2",
+        "talking"
+      ]
+    },
+    {
+      "id": "sleeping_idle",
+      "file": "Sleeping Idle.fbx",
+      "name": "Sleeping Idle",
+      "pack": "Root",
+      "category": "SURVIVAL",
+      "description": "Character animation: Sleeping Idle",
+      "actions": [
+        "SLEEP"
+      ],
+      "states": [
+        "SLEEPING",
+        "IDLE"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 17.6,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "survival",
+        "sleep",
+        "sleeping",
+        "idle",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "laying_sleeping"
+      ]
+    },
+    {
+      "id": "stand_up",
+      "file": "Stand Up.fbx",
+      "name": "Stand Up",
+      "pack": "Root",
+      "category": "TRANSITION",
+      "description": "Character animation: Stand Up",
+      "actions": [
+        "STAND_UP"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "TRANSITION",
+      "rootMotion": true,
+      "duration": 8.27,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "transition",
+        "stand",
+        "up",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "stand_up_from_chair",
+        "standing_up_1",
+        "standing_up_from_fall"
+      ]
+    },
+    {
+      "id": "stand_up_from_chair",
+      "file": "Stand Up_from_chair.fbx",
+      "name": "Stand Up_from_chair",
+      "pack": "Root",
+      "category": "TRANSITION",
+      "description": "Character animation: Stand Up_from_chair",
+      "actions": [
+        "STAND_UP"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "TRANSITION",
+      "rootMotion": true,
+      "duration": 4.83,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "transition",
+        "stand",
+        "up",
+        "from",
+        "chair",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "stand_up",
+        "standing_up_1",
+        "standing_up_from_fall"
+      ]
+    },
+    {
+      "id": "standing_greeting",
+      "file": "Standing Greeting.fbx",
+      "name": "Standing Greeting",
+      "pack": "Root",
+      "category": "SOCIAL",
+      "description": "Character animation: Standing Greeting",
+      "actions": [
+        "GREETING"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 5.1,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "social",
+        "greeting",
+        "standing",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "quick_formal_bow",
+        "waving"
+      ]
+    },
+    {
+      "id": "standing_up_1",
+      "file": "Standing Up (1).fbx",
+      "name": "Standing Up (1)",
+      "pack": "Root",
+      "category": "TRANSITION",
+      "description": "Character animation: Standing Up (1)",
+      "actions": [
+        "STAND_UP"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "TRANSITION",
+      "rootMotion": true,
+      "duration": 11.4,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "transition",
+        "stand",
+        "up",
+        "standing",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "stand_up",
+        "stand_up_from_chair",
+        "standing_up_from_fall"
+      ]
+    },
+    {
+      "id": "standing_up_from_fall",
+      "file": "Standing Up_from_fall.fbx",
+      "name": "Standing Up_from_fall",
+      "pack": "Root",
+      "category": "TRANSITION",
+      "description": "Character animation: Standing Up_from_fall",
+      "actions": [
+        "STAND_UP"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "TRANSITION",
+      "rootMotion": true,
+      "duration": 1.67,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "transition",
+        "stand",
+        "up",
+        "standing",
+        "from",
+        "fall",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "stand_up",
+        "stand_up_from_chair",
+        "standing_up_1"
+      ]
+    },
+    {
+      "id": "swimming",
+      "file": "Swimming.fbx",
+      "name": "Swimming",
+      "pack": "Root",
+      "category": "SWIMMING",
+      "description": "Character animation: Swimming",
+      "actions": [
+        "SWIM"
+      ],
+      "states": [
+        "SWIMMING"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 4.53,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "swimming",
+        "swim",
+        "root"
+      ],
+      "status": "AVAILABLE_AND_USED",
+      "variants": []
+    },
+    {
+      "id": "talking_1",
+      "file": "Talking-1.fbx",
+      "name": "Talking-1",
+      "pack": "Root",
+      "category": "SOCIAL",
+      "description": "Character animation: Talking-1",
+      "actions": [
+        "TALK"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 3.93,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "social",
+        "talk",
+        "talking",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "sitting_talking",
+        "talking_2",
+        "talking"
+      ]
+    },
+    {
+      "id": "talking_2",
+      "file": "Talking-2.fbx",
+      "name": "Talking-2",
+      "pack": "Root",
+      "category": "SOCIAL",
+      "description": "Character animation: Talking-2",
+      "actions": [
+        "TALK"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 5.17,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "social",
+        "talk",
+        "talking",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "sitting_talking",
+        "talking_1",
+        "talking"
+      ]
+    },
+    {
+      "id": "talking",
+      "file": "Talking.fbx",
+      "name": "Talking",
+      "pack": "Root",
+      "category": "SOCIAL",
+      "description": "Character animation: Talking",
+      "actions": [
+        "TALK"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 10.27,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "social",
+        "talk",
+        "talking",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "sitting_talking",
+        "talking_1",
+        "talking_2"
+      ]
+    },
+    {
+      "id": "thankful",
+      "file": "Thankful.fbx",
+      "name": "Thankful",
+      "pack": "Root",
+      "category": "SOCIAL",
+      "description": "Character animation: Thankful",
+      "actions": [
+        "EXPRESS"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 3,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "social",
+        "express",
+        "thankful",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "agreeing",
+        "clapping",
+        "laughing",
+        "pointing_back",
+        "pointing",
+        "shaking_head_no"
+      ]
+    },
+    {
+      "id": "throw_object",
+      "file": "Throw Object.fbx",
+      "name": "Throw Object",
+      "pack": "Root",
+      "category": "INTERACTION",
+      "description": "Character animation: Throw Object",
+      "actions": [
+        "THROW"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 4.87,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "interaction",
+        "throw",
+        "object",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": []
+    },
+    {
+      "id": "treading_water",
+      "file": "Treading Water.fbx",
+      "name": "Treading Water",
+      "pack": "Root",
+      "category": "SWIMMING",
+      "description": "Character animation: Treading Water",
+      "actions": [
+        "WATER_CROP"
+      ],
+      "states": [
+        "FARMING",
+        "SWIMMING"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 3,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "swimming",
+        "water",
+        "crop",
+        "treading",
+        "root"
+      ],
+      "status": "AVAILABLE_AND_USED",
+      "variants": [
+        "farming_pack_watering"
+      ]
+    },
+    {
+      "id": "walking",
+      "file": "Walking.fbx",
+      "name": "Walking",
+      "pack": "Root",
+      "category": "LOCOMOTION",
+      "description": "Character animation: Walking",
+      "actions": [
+        "GO_TO",
+        "WALK"
+      ],
+      "states": [
+        "LOCOMOTION"
+      ],
+      "loop": true,
+      "loopType": "LOOP",
+      "rootMotion": true,
+      "duration": 1.03,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "locomotion",
+        "go",
+        "to",
+        "walk",
+        "walking",
+        "root"
+      ],
+      "status": "AVAILABLE_AND_USED",
+      "variants": [
+        "male_injured_pack_injured_run_backwards_left_turn",
+        "male_injured_pack_injured_run_backwards_right_turn",
+        "male_injured_pack_injured_run_backwards",
+        "male_injured_pack_injured_run_jump",
+        "male_injured_pack_injured_run_left_turn",
+        "male_injured_pack_injured_run_right_turn",
+        "male_injured_pack_injured_run",
+        "male_injured_pack_injured_walk_backwards",
+        "male_injured_pack_injured_walk_left_turn",
+        "male_injured_pack_injured_walk_right_turn",
+        "male_injured_pack_injured_walk",
+        "running_tired",
+        "running"
+      ]
+    },
+    {
+      "id": "waving",
+      "file": "Waving.fbx",
+      "name": "Waving",
+      "pack": "Root",
+      "category": "GENERAL",
+      "description": "Character animation: Waving",
+      "actions": [
+        "GREETING"
+      ],
+      "states": [
+        "ACTION"
+      ],
+      "loop": false,
+      "loopType": "ONE_SHOT",
+      "rootMotion": true,
+      "duration": 3.17,
+      "fps": 30,
+      "trackCount": 53,
+      "boneCount": 65,
+      "skeleton": "Standard Humanoid Skeleton (Mixamo Compatible)",
+      "compatibleCharacters": [
+        "Ben",
+        "Julie",
+        "NPC"
+      ],
+      "characterCompatibility": {
+        "Ben": "DIRECTLY_COMPATIBLE",
+        "Julie": "REQUIRES_RETARGETING",
+        "NPC": "DIRECTLY_COMPATIBLE"
+      },
+      "tags": [
+        "general",
+        "greeting",
+        "waving",
+        "root"
+      ],
+      "status": "AVAILABLE_NOT_CURRENTLY_USED",
+      "variants": [
+        "quick_formal_bow",
+        "standing_greeting"
+      ]
+    }
+  ]
+}

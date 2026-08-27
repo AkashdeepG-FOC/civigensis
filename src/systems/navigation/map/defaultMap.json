@@ -1,0 +1,66 @@
+{
+  "version": "1.0.0",
+  "worldSize": 1000,
+  "sectorCount": 20,
+  "sectorSize": 50,
+  "cellSize": 5,
+  "semanticLocations": [
+    {
+      "id": "village_bridge",
+      "name": "Willowbrook Bridge",
+      "type": "landmark",
+      "position": { "x": 0, "y": 1.6, "z": -65 },
+      "sector": { "sectorX": 10, "sectorZ": 8 },
+      "interactionRadius": 10
+    },
+    {
+      "id": "river",
+      "name": "Village River",
+      "type": "water",
+      "position": { "x": 0, "y": 1.5, "z": -65 },
+      "sector": { "sectorX": 10, "sectorZ": 8 },
+      "interactionRadius": 8
+    },
+    {
+      "id": "village_center",
+      "name": "Village Center Market",
+      "type": "landmark",
+      "position": { "x": 0, "y": 0, "z": 5 },
+      "sector": { "sectorX": 10, "sectorZ": 10 },
+      "interactionRadius": 12
+    },
+    {
+      "id": "bens_farm",
+      "name": "Ben's Wheat Farm",
+      "type": "farm",
+      "position": { "x": 120, "y": 0, "z": -160 },
+      "sector": { "sectorX": 12, "sectorZ": 6 },
+      "interactionRadius": 35
+    },
+    {
+      "id": "wheat",
+      "name": "Ben's Wheat Field",
+      "type": "farm",
+      "position": { "x": 120, "y": 0, "z": -160 },
+      "sector": { "sectorX": 12, "sectorZ": 6 },
+      "interactionRadius": 35
+    },
+    {
+      "id": "bens_house",
+      "name": "Ben's House & Cottage",
+      "type": "building",
+      "position": { "x": -18, "y": 0, "z": -12 },
+      "sector": { "sectorX": 9, "sectorZ": 9 },
+      "interactionRadius": 8
+    },
+    {
+      "id": "julies_bakery",
+      "name": "Julie's Bakery Manor",
+      "type": "building",
+      "position": { "x": 5, "y": 0, "z": -16 },
+      "sector": { "sectorX": 10, "sectorZ": 9 },
+      "interactionRadius": 10
+    }
+  ],
+  "sectors": []
+}

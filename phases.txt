@@ -1,0 +1,599 @@
+CiviGenis → Emergence: Step-by-Step Plan
+Phase 0 — Freeze the working CiviGenis
+
+Do this first.
+
+Before changing architecture:
+
+CiviGenis
+├── React/R3F
+├── Ben
+├── Julie
+├── NPCs
+├── Navigation
+├── Map Editor
+├── Perception
+├── Ollama
+├── Memory
+└── Simulation
+
+Create a Git branch/tag:
+
+git checkout -b emergence-migration
+git tag civigensis-before-emergence
+Goal
+
+You must always be able to return to the current working version.
+
+Do not modify anything in this step.
+
+Phase 1 — Create the Backend Foundation
+
+This is the first real development phase.
+
+Current:
+
+Browser
+   ↓
+React
+   ↓
+Simulation
+   ↓
+Agents
+   ↓
+Ollama
+
+Target:
+
+React/R3F
+    ↓
+WebSocket
+    ↓
+FastAPI
+    ↓
+Simulation Server
+    ↓
+Agents
+
+The audit identifies the absence of a backend as one of the biggest architectural gaps.
+
+Create:
+
+backend/
+├── app/
+│   ├── main.py
+│   ├── config.py
+│   ├── api/
+│   ├── simulation/
+│   ├── agents/
+│   ├── world/
+│   ├── memory/
+│   ├── tools/
+│   └── websocket/
+├── requirements.txt
+└── README.md
+
+Initially, don't move everything.
+
+Just prove:
+
+FastAPI starts
+        ↓
+React connects
+        ↓
+WebSocket works
+        ↓
+Backend sends simulation state
+        ↓
+React displays it
+Success condition
+
+Open CiviGenis and see:
+
+Backend: CONNECTED
+Simulation: RUNNING
+WebSocket: CONNECTED
+Phase 2 — Add PostgreSQL
+
+Do not create all 60+ Emergence tables immediately.
+
+Start with the core.
+
+PostgreSQL
+│
+├── citizens
+├── world_state
+├── locations
+├── needs
+├── goals
+├── memories
+├── relationships
+├── events
+├── actions
+└── simulation_time
+
+The audit confirms that almost all current citizen state is volatile/in-memory and that PostgreSQL persistence is a major Emergence requirement.
+
+Target:
+
+Citizen
+   ↓
+FastAPI
+   ↓
+PostgreSQL
+
+instead of:
+
+Citizen
+   ↓
+JavaScript memory
+Phase 3 — Move World State to Backend
+
+Currently CiviGenis has semantic locations such as:
+
+bens_farm
+julies_bakery
+village_center
+river
+bens_house
+julies_house
+vegetable_stall
+
+and a world object registry.
+
+Keep those concepts.
+
+But change ownership:
+
+Before
+React
+ ↓
+WorldSimulationEngine
+ ↓
+JavaScript state
+After
+FastAPI
+ ↓
+WorldState
+ ↓
+PostgreSQL
+
+React should become primarily a viewer/controller, not the authoritative world-state owner.
+
+Phase 4 — Move Simulation Orchestration
+
+This is one of the most important phases.
+
+Current system:
+
+Browser simulation loop
+      ↓
+CitizenAgent
+      ↓
+event wakeup / timer
+
+The audit describes this as only partial compared with Emergence's round-robin orchestration and reaction system.
+
+Build:
+
+SimulationOrchestrator
+        │
+        ├── simulation clock
+        ├── turn scheduler
+        ├── agent scheduler
+        ├── event queue
+        ├── action execution
+        └── world-state updates
+
+Initially use:
+
+CONCURRENT_AGENTS = 1
+
+So:
+
+Tick
+ ↓
+Ben
+ ↓
+execute
+ ↓
+world update
+ ↓
+Julie
+ ↓
+execute
+ ↓
+world update
+ ↓
+next tick
+
+This will also make debugging Ben/Julie behavior much easier.
+
+Phase 5 — Move Ben & Julie Cognition to Backend
+
+Do not rewrite their cognitive architecture.
+
+You already have:
+
+CitizenAgent
+CognitionEngine
+NeedSystem
+EmotionSystem
+GoalSystem
+BeliefSystem
+RelationshipSystem
+PerceptionEngine
+
+The audit specifically recognizes this as a substantial existing foundation.
+
+Move the execution authority to backend.
+
+Target:
+
+Backend
+ │
+ ├── Ben Agent
+ │    ├── needs
+ │    ├── emotions
+ │    ├── goals
+ │    ├── beliefs
+ │    ├── memories
+ │    └── relationships
+ │
+ └── Julie Agent
+      ├── needs
+      ├── emotions
+      ├── goals
+      ├── beliefs
+      ├── memories
+      └── relationships
+Phase 6 — Fix/Preserve LLM Isolation
+
+Your current audit says this is already in a good state:
+
+Ben
+ ↓
+BEN_CONFIG
+ ↓
+deepseek-r1:7b
+
+Julie
+ ↓
+JULIE_CONFIG
+ ↓
+qwen2.5:3b
+
+The current implementation reportedly has explicit ID validation, model isolation, unique decision IDs, character locks and response-repeat diagnostics.
+
+Don't unnecessarily rewrite this.
+
+Instead, make the backend call:
+
+Ben Agent
+   ↓
+Ben Prompt
+   ↓
+Ben Model
+
+Julie Agent
+   ↓
+Julie Prompt
+   ↓
+Julie Model
+
+Later you can add the Emergence multi-provider router.
+
+Phase 7 — WebSocket World Streaming
+
+Now connect the backend world to your existing R3F frontend.
+
+                 FASTAPI
+                    │
+              World State
+                    │
+                WebSocket
+                    │
+                    ▼
+              React / R3F
+                    │
+          ┌─────────┼─────────┐
+          ▼         ▼         ▼
+        Ben       Julie      NPCs
+
+The frontend should receive things like:
+
+{
+  "type": "world_state",
+  "simulationTime": "...",
+  "citizens": [...],
+  "objects": [...],
+  "events": [...]
+}
+
+Your existing 3D rendering should continue doing what it already does.
+
+Phase 8 — Persistent Memory
+
+Now implement the Emergence memory architecture.
+
+Your current system has episodic/semantic/social memory, but the audit identifies missing Soul Entries, self-care summarization, Neural Link and diary systems.
+
+Build:
+
+Citizen Memory
+│
+├── Soul Entries
+├── Episodic Memory
+├── Semantic Memory
+├── Social Memory
+├── Diary
+├── Conversation Memory
+└── Memory Summarizer
+
+And:
+
+Memory
+ ↓
+PostgreSQL
+
+not:
+
+Memory
+ ↓
+array[]
+Phase 9 — Upgrade the World Map
+
+Your existing navigation should not be replaced.
+
+The audit says your hierarchical navigation is already strong and can scale toward the 1000m × 1000m world.
+
+Extend:
+
+1000m × 1000m
+       ↓
+20 × 20 sectors
+       ↓
+50m × 50m sectors
+       ↓
+local navigation grid
+
+Add Emergence landmarks:
+
+Town Hall
+Central Bank
+Police Station
+Library
+Victory Arch
+Ad Tower
+Central Plaza
+Residential plots
+
+Your existing Map Editor can be reused; the audit specifically considers it reusable with schema additions.
+
+Phase 10 — Expand Tool System
+
+You already have a tool/action architecture.
+
+The audit estimates roughly 10 actions currently versus Emergence's 120+ tools.
+
+Don't create 120 tools at once.
+
+Create categories:
+
+Tools
+├── Movement
+├── Observation
+├── Farming
+├── Inventory
+├── Communication
+├── Social
+├── Economy
+├── Banking
+├── Governance
+├── Building
+├── Information
+└── World Interaction
+
+Then gradually implement each category.
+
+Phase 11 — Implement Economy
+
+Only after persistence and orchestration are stable.
+
+Build:
+
+ComputeCredits
+      │
+      ├── Wallet
+      ├── Transactions
+      ├── Transfers
+      ├── Theft
+      ├── Victory Arch
+      ├── Bank
+      ├── Loans
+      ├── Ads
+      └── Services
+
+The audit confirms these are currently missing.
+
+Phase 12 — Implement Governance
+
+Then:
+
+Governance
+│
+├── Constitution
+├── Articles
+├── Proposals
+├── Voting
+├── 70% threshold
+├── Town Hall
+├── Police Station
+└── Complaints
+
+The audit identifies all of these as missing.
+
+Phase 13 — Reactive Social World
+
+Now implement the Emergence-style social behavior:
+
+Ben speaks
+   ↓
+25m overhearing scan
+   ↓
+Nearby citizens detected
+   ↓
+Relevant citizens react
+   ↓
+Reaction turn
+   ↓
+Maximum 2 tool calls
+
+This is much more important for your goal of making Ben and Julie feel alive than adding random extra NPCs.
+
+Phase 14 — NPC/System Characters
+
+After the core world works:
+
+NPCs
+├── Town Hall Admin
+├── Bank
+├── Police
+├── Reporter
+├── Blog Admin
+├── Shopkeepers
+└── Other deterministic citizens
+
+Keep NPC behavior deterministic where appropriate.
+
+Reserve expensive LLM reasoning for important autonomous citizens.
+
+Phase 15 — Real-Time Persistent World
+
+Finally:
+
+Browser CLOSED
+      ↓
+World continues
+      ↓
+Backend continues
+      ↓
+Agents continue
+      ↓
+Database updated
+      ↓
+Browser reopened
+      ↓
+Current world restored
+
+This is the point where CiviGenis becomes a persistent autonomous world, rather than just a 3D simulation running in a browser.
+
+Recommended order in one diagram
+                    CIVIGENIS
+                        │
+                 ┌──────▼──────┐
+                 │  PHASE 0    │
+                 │ Freeze      │
+                 │ Current App │
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 1     │
+                 │ FastAPI     │
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 2     │
+                 │ PostgreSQL  │
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 3     │
+                 │ World State │
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 4     │
+                 │ Orchestrator│
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 5     │
+                 │ Ben + Julie │
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 6     │
+                 │ LLM Layer   │
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 7     │
+                 │ WebSocket   │
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 8     │
+                 │ Memory      │
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 9     │
+                 │ World Map   │
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 10    │
+                 │ 120+ Tools  │
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 11    │
+                 │ Economy     │
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 12    │
+                 │ Governance  │
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 13    │
+                 │ Social      │
+                 │ Reactions   │
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 14    │
+                 │ NPC World   │
+                 └──────┬──────┘
+                        ↓
+                 ┌─────────────┐
+                 │ PHASE 15    │
+                 │ 24/7 World  │
+                 └─────────────┘
+The key rule
+
+Don't do this:
+
+"Rewrite CiviGenis according to Emergence"
+
+Do this:
+
+Current CiviGenis
+      ↓
+Preserve working systems
+      ↓
+Add backend authority
+      ↓
+Add persistence
+      ↓
+Move orchestration
+      ↓
+Connect frontend
+      ↓
+Add Emergence systems one by one
+
+That matches the audit's conclusion that CiviGenis can be evolved incrementally and that the navigation, map editor, 3D pipeline, tools, identity and perception should be preserved.
+
+Your immediate next task should therefore be Phase 1 only: FastAPI backend foundation + WebSocket connection, without changing Ben/Julie behavior yet.
