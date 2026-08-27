@@ -5,6 +5,7 @@ import { getSemanticLocationAtPosition } from '../../types/locations';
 import { worldEventBus } from '../simulation/WorldEventBus';
 import { worldObjectRegistry } from './WorldObjectRegistry';
 import { benAIBrain, julieAIBrain } from './CitizenAIBrain';
+import { agentEventLogger } from '../logging/AgentEventLogger';
 
 export class PerceptionEngine {
   private citizenId: CitizenId;
@@ -121,6 +122,21 @@ export class PerceptionEngine {
       ambientSound: worldState.weather.rainRate > 0 ? 'Sound of falling rain' : 'Gentle ambient breeze',
       recentEvents,
     };
+
+    agentEventLogger.logPerception({
+      agentId: this.citizenId,
+      location: locationName,
+      position: currentPos,
+      nearbyAgents: nearbyCitizens.map((c) => ({ agent_id: c.id, distance: c.distance })),
+      weather: worldState.weather.type,
+      temperature: worldState.weather.temperature,
+      simulationTime: {
+        day: worldState.time.day,
+        hour: worldState.time.hour,
+        minute: worldState.time.minute,
+        total_minutes: worldSimulationEngine.getTotalSimulationMinutes(),
+      },
+    });
 
     return snapshot;
   }

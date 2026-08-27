@@ -210,6 +210,7 @@ export interface ToolResult {
 }
 
 export interface StructuredDecision {
+  decision_id?: string;
   goal: string;
   reason?: string;
   action?: 'GO_TO' | 'COLLECT_WATER' | 'WATER_CROP' | 'HARVEST_CROP' | 'EAT' | 'REST' | 'INSPECT' | 'TALK' | 'EXPLORE' | 'WAIT' | string;

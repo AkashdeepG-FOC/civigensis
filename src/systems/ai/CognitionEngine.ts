@@ -15,6 +15,7 @@ import { BEN_CONFIG, JULIE_CONFIG } from '../../config/citizens';
 import { farmingWorldState } from './FarmingWorldState';
 import { simulationEngine } from '../simulation/SimulationEngine';
 import { navigationSystem } from './NavigationSystem';
+import { activityDurationManager } from '../simulation/ActivityDurationManager';
 
 import { CITIZEN_INTERACTION_RANGE, PHYSICAL_INTIMATE_RANGE } from './InteractionConstants';
 import { eventEngine } from './EventEngine';
@@ -73,6 +74,16 @@ export class CognitionEngine {
     return this.isThinking;
   }
 
+  public isActionInProgress(): boolean {
+    const isNavigating = navigationSystem.getCurrentIntention(this.identity.id) !== null;
+    const isActivityActive = activityDurationManager.isActivityActive(this.identity.id);
+    return isNavigating || isActivityActive;
+  }
+
+  public getIsBusy(): boolean {
+    return this.isThinking || this.isActionInProgress();
+  }
+
   public getCurrentDecision(): StructuredDecision | null {
     return this.currentDecision;
   }
@@ -87,6 +98,25 @@ export class CognitionEngine {
   ) {
     const now = Date.now();
     if (this.isThinking) return;
+
+    // Action Execution Guard: Prevent triggering a new LLM reasoning request
+    // if the citizen is currently busy moving or performing an activity duration,
+    // unless this trigger is an explicit action completion or urgent interrupt.
+    const isActionActive = this.isActionInProgress();
+    const isActionCompletionTrigger = 
+      triggerReason.includes('Arrived') ||
+      triggerReason.includes('completed') ||
+      triggerReason.includes('failed') ||
+      triggerReason.includes('No active goal') ||
+      triggerReason.includes('Initial startup') ||
+      triggerReason.includes('Urgent') ||
+      triggerReason.includes('Interrupt');
+
+    if (isActionActive && !isActionCompletionTrigger) {
+      console.log(`[COGNITION_GUARD][${this.identity.name.toUpperCase()}] Suppressed LLM reasoning turn: Action currently in progress ("${triggerReason}").`);
+      return;
+    }
+
     if (now - this.lastReasoningTime < this.minReasoningIntervalMs && triggerReason.includes('Routine')) {
       return;
     }
@@ -198,6 +228,7 @@ export class CognitionEngine {
       // 5. Fallback heuristic decision if Ollama is offline or unparseable
       if (!decision) {
         decision = this.generateFallbackDecision(perception.locationName, perception.nearbyCitizens.length > 0);
+        decision.decision_id = `DEC-FALLBACK-${Date.now()}`;
       }
 
       // 6. Anti-Stagnation Override & Target Location / Citizen Locomotion Auto-Routing
@@ -363,8 +394,8 @@ Speech: "${decision.speech || decision.intention || 'Working in village'}"
     else if (textToCheck.includes('house') || textToCheck.includes('cottage')) targetLoc = 'bens_house';
 
     const requestedMoveLoc = decision.tool === 'move_to' ? (decision.arguments?.location || targetLoc) : null;
-    const canonicalCurrent = TargetResolver.resolveTarget(currentLocation).locationId;
-    const canonicalRequested = requestedMoveLoc ? TargetResolver.resolveTarget(requestedMoveLoc).locationId : null;
+    const canonicalCurrent = TargetResolver.resolveTarget(currentLocation)?.locationId;
+    const canonicalRequested = requestedMoveLoc ? TargetResolver.resolveTarget(requestedMoveLoc)?.locationId : null;
 
     // Prevent redundant move_to if already at destination location
     if (canonicalRequested && canonicalRequested === canonicalCurrent) {
@@ -387,7 +418,7 @@ Speech: "${decision.speech || decision.intention || 'Working in village'}"
       }
     }
 
-    if (targetLoc && TargetResolver.resolveTarget(targetLoc).locationId !== canonicalCurrent && decision.tool !== 'move_to') {
+    if (targetLoc && TargetResolver.resolveTarget(targetLoc)?.locationId !== canonicalCurrent && decision.tool !== 'move_to') {
       console.log(
         `[COGNITION][AUTO_ROUTE][${this.identity.name.toUpperCase()}] Overriding '${decision.tool}' to 'move_to(${targetLoc})' because character is currently at '${currentLocation}'`
       );
@@ -554,13 +585,13 @@ Speech: "${decision.speech || decision.intention || 'Working in village'}"
     this.fallbackLocationIndex = (this.fallbackLocationIndex + 1) % locationList.length;
     let nextTargetLoc = locationList[this.fallbackLocationIndex];
 
-    const currentLocId = TargetResolver.resolveTarget(locationName).locationId;
-    let targetLocId = TargetResolver.resolveTarget(nextTargetLoc).locationId;
+    const currentLocId = TargetResolver.resolveTarget(locationName)?.locationId;
+    let targetLocId = TargetResolver.resolveTarget(nextTargetLoc)?.locationId;
 
     if (currentLocId === targetLocId) {
       this.fallbackLocationIndex = (this.fallbackLocationIndex + 1) % locationList.length;
       nextTargetLoc = locationList[this.fallbackLocationIndex];
-      targetLocId = TargetResolver.resolveTarget(nextTargetLoc).locationId;
+      targetLocId = TargetResolver.resolveTarget(nextTargetLoc)?.locationId;
     }
 
     const locDisplayName = nextTargetLoc.replace('_', ' ');

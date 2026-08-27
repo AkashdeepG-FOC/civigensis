@@ -208,7 +208,7 @@ export class ConflictSystem {
   private triggerTargetReaction(targetId: CitizenId, eventSummary: string) {
     setTimeout(() => {
       const targetAgent = this.getAgent(targetId);
-      if (targetAgent.getControlMode() === 'AI' && !targetAgent.cognitionEngine.getIsThinking()) {
+      if (targetAgent.getControlMode() === 'AI' && !targetAgent.cognitionEngine.getIsBusy()) {
         const dummyPos = {
           ben: simulationEngine.getState().citizens.ben.position,
           julie: simulationEngine.getState().citizens.julie.position,

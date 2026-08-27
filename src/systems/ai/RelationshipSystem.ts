@@ -1,5 +1,6 @@
 import { RelationshipState } from '../../types/citizenAgent';
 import { CitizenId } from '../../types/citizen';
+import { agentEventLogger } from '../logging/AgentEventLogger';
 
 export class RelationshipSystem {
   private selfId: CitizenId;
@@ -52,6 +53,7 @@ export class RelationshipSystem {
     topic?: string
   ) {
     const rel = this.getRelationship(targetCitizenId);
+    const previousValues = { ...rel };
     const clamp = (val: number) => Math.max(0, Math.min(100, val));
 
     if (deltas.trust !== undefined) rel.trust = clamp(rel.trust + deltas.trust);
@@ -67,6 +69,14 @@ export class RelationshipSystem {
 
     rel.lastInteractionTime = new Date().toLocaleTimeString('en-US', { hour12: false });
     if (topic) rel.lastTopic = topic;
+
+    agentEventLogger.logRelationshipUpdate({
+      agentId: this.selfId,
+      targetAgent: targetCitizenId,
+      previousValues,
+      newValues: { ...rel },
+      reason: topic ? `Topic: ${topic}` : 'Relationship modification',
+    });
   }
 
   public getRelationshipPromptSummary(targetCitizenId: CitizenId): string {

@@ -6,6 +6,8 @@ import {
 } from '../../types/citizenAgent';
 import { CitizenId } from '../../types/citizen';
 
+import { agentEventLogger } from '../logging/AgentEventLogger';
+
 export class MemorySystem {
   private citizenId: CitizenId;
   private episodicMemories: EpisodicMemoryItem[] = [];
@@ -38,6 +40,15 @@ export class MemorySystem {
     if (this.episodicMemories.length > this.maxCapacity) {
       this.episodicMemories.pop();
     }
+
+    agentEventLogger.logMemory({
+      agentId: this.citizenId,
+      memoryType: 'episodic',
+      summary: description,
+      location,
+      importance: emotionalImpact > 0 ? 3 : 1,
+    });
+
     return memory;
   }
 

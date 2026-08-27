@@ -88,7 +88,7 @@ export class CitizenAgent {
         return;
       }
 
-      if (this.controlMode === 'AI' && !this.cognitionEngine.getIsThinking()) {
+      if (this.controlMode === 'AI' && !this.cognitionEngine.getIsBusy()) {
         const dummyPos: Record<CitizenId, [number, number, number]> = {
           ben: this.identity.id === 'ben' ? this.lastPos : [0, 0, 0],
           julie: this.identity.id === 'julie' ? this.lastPos : [0, 0, 0],

@@ -11,6 +11,7 @@ import { activityDurationManager } from '../simulation/ActivityDurationManager';
 import { CITIZEN_INTERACTION_RANGE } from './InteractionConstants';
 import { TargetResolver } from './TargetResolver';
 import { worldMapStore } from '../navigation/WorldMapStore';
+import { agentEventLogger } from '../logging/AgentEventLogger';
 
 export interface NavigationTarget {
   locationId: string;
@@ -293,6 +294,25 @@ export class NavigationSystem {
 
         console.log(`[NAV] Destination reached: ${targetName} for ${citizenId.toUpperCase()}`);
         console.log(`[NAV] Navigation completed`);
+
+        const simState = worldSimulationEngine.getState();
+        const decisionId = (navState.currentIntention.parsedIntent as any)?.decisionId;
+        agentEventLogger.logMovementCompleted({
+          agentId: citizenId,
+          agentName: citizenName,
+          decisionId,
+          targetLocationId: navState.currentTarget.locationId,
+          targetName,
+          distanceToTarget: Math.round(Math.sqrt(distSq) * 10) / 10,
+          location: getSemanticLocationAtPosition(currentPos),
+          position: currentPos,
+          simulationTime: {
+            day: simState.time.day,
+            hour: simState.time.hour,
+            minute: simState.time.minute,
+            total_minutes: worldSimulationEngine.getTotalSimulationMinutes(),
+          },
+        });
         if (nextAction) {
           console.log(`[MULTI_STEP][${citizenId.toUpperCase()}] Arrived at ${targetName}. Chaining expected next action: "${nextAction}"`);
         }

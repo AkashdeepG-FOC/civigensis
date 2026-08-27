@@ -6,6 +6,8 @@ import { TargetResolver } from './TargetResolver';
 import { activityDurationManager } from '../simulation/ActivityDurationManager';
 import { worldEventBus } from '../simulation/WorldEventBus';
 import { worldSimulationEngine } from '../simulation/WorldSimulationEngine';
+import { agentEventLogger } from '../logging/AgentEventLogger';
+import { getSemanticLocationAtPosition } from '../../types/locations';
 
 export class ActionExecutor {
   /**
@@ -19,6 +21,30 @@ export class ActionExecutor {
     const toolName = decision.tool ? decision.tool.toLowerCase() : 'wait';
     const tool = toolRegistry.getTool(toolName) || toolRegistry.getTool('wait')!;
     const args = decision.arguments || {};
+    const startTime = Date.now();
+    const decisionId = decision.decision_id || `DEC-${Date.now()}`;
+    const locationName = getSemanticLocationAtPosition(currentPos);
+    const simState = worldSimulationEngine.getState();
+    const simTime = {
+      day: simState.time.day,
+      hour: simState.time.hour,
+      minute: simState.time.minute,
+      total_minutes: worldSimulationEngine.getTotalSimulationMinutes(),
+    };
+
+    // 0. Log Tool Call event before execution
+    console.log(`[TOOL_CALL] agent=${citizenId} decision=${decisionId} tool=${tool.name}`);
+    agentEventLogger.logToolCall({
+      agentId: citizenId,
+      decisionId,
+      toolName: tool.name,
+      toolArgs: args,
+      location: locationName,
+      position: currentPos,
+      currentGoal: decision.goal || null,
+      currentIntention: decision.intention || null,
+      simulationTime: simTime,
+    });
 
     // 1. Reality Validation Check
     const validation = tool.validate(citizenId, args, currentPos);
@@ -29,6 +55,16 @@ export class ActionExecutor {
         citizenId,
         tool: tool.name,
         reason: validation.reason,
+      });
+
+      agentEventLogger.logActionFailed({
+        agentId: citizenId,
+        decisionId,
+        toolName: tool.name,
+        reason: validation.reason,
+        location: locationName,
+        position: currentPos,
+        simulationTime: simTime,
       });
 
       return {
@@ -42,18 +78,55 @@ export class ActionExecutor {
       case 'MOVEMENT': {
         const targetStr = args.location || args.target;
         if (!targetStr || typeof targetStr !== 'string' || targetStr.trim().length === 0) {
-          worldEventBus.emit('ACTION_FAILED', `${citizenId} failed MOVE_TO: No destination specified`, {
+          const failureReason = 'MOVE_TO requires an explicit target.';
+          worldEventBus.emit('ACTION_FAILED', `${citizenId} failed MOVE_TO: ${failureReason}`, {
             citizenId,
             tool: tool.name,
-            reason: 'MOVE_TO requires an explicit target.',
+            reason: failureReason,
           });
+
+          agentEventLogger.logActionFailed({
+            agentId: citizenId,
+            decisionId,
+            toolName: tool.name,
+            reason: failureReason,
+            location: locationName,
+            position: currentPos,
+            simulationTime: simTime,
+          });
+
           return {
             success: false,
-            reason: 'MOVE_TO requires an explicit target.',
+            reason: failureReason,
           };
         }
 
-        let resolvedTarget = TargetResolver.resolveTarget(targetStr, currentPos);
+        const resolvedTarget = TargetResolver.resolveTarget(targetStr, currentPos, citizenId);
+        if (!resolvedTarget) {
+          const failureReason = `Unknown destination "${targetStr}". No valid registered world target matches this destination.`;
+          console.warn(`[ACTION_EXECUTOR][INVALID_TARGET][${citizenId.toUpperCase()}] ${failureReason}`);
+
+          worldEventBus.emit('ACTION_FAILED', `${citizenId} failed MOVE_TO: ${failureReason}`, {
+            citizenId,
+            tool: tool.name,
+            reason: failureReason,
+          });
+
+          agentEventLogger.logActionFailed({
+            agentId: citizenId,
+            decisionId,
+            toolName: tool.name,
+            reason: failureReason,
+            location: locationName,
+            position: currentPos,
+            simulationTime: simTime,
+          });
+
+          return {
+            success: false,
+            reason: failureReason,
+          };
+        }
 
         // Check if character is ALREADY physically standing at resolvedTarget position
         const dx = resolvedTarget.position[0] - currentPos[0];
@@ -63,20 +136,26 @@ export class ActionExecutor {
         const arrivalRadius = isCitizenTarget ? 4.0 : Math.min(3.5, resolvedTarget.interactionRadius);
 
         if (distSq <= Math.pow(arrivalRadius, 2)) {
-          if (isCitizenTarget) {
-            console.log(`[ACTION_EXECUTOR][ARRIVED_AT_CITIZEN][${citizenId.toUpperCase()}] Standing within interaction range (${Math.sqrt(distSq).toFixed(1)}m) of ${resolvedTarget.name}. Arrival complete.`);
-            return {
-              success: true,
-              reason: `Arrived near ${resolvedTarget.name}`,
-              data: { arrived: true },
-            };
-          }
+          console.log(
+            `[ACTION_EXECUTOR][ARRIVED_AT_TARGET][${citizenId.toUpperCase()}] Standing within interaction range (${Math.sqrt(distSq).toFixed(1)}m) of ${resolvedTarget.name}. Arrival complete.`
+          );
 
-          const isBen = citizenId === 'ben';
-          const alternateLocs = isBen ? ['bens_farm', 'river', 'bens_house', 'julies_bakery'] : ['julies_bakery', 'river', 'bens_house', 'bens_farm'];
-          const nextLocId = alternateLocs[Math.floor(Math.random() * alternateLocs.length)];
-          console.log(`[ACTION_EXECUTOR][ALREADY_AT_TARGET][${citizenId.toUpperCase()}] Standing at ${resolvedTarget.name}. Auto-rerouting movement to '${nextLocId}'.`);
-          resolvedTarget = TargetResolver.resolveTarget(nextLocId, currentPos);
+          agentEventLogger.logMovementCompleted({
+            agentId: citizenId,
+            decisionId,
+            targetLocationId: resolvedTarget.locationId,
+            targetName: resolvedTarget.name,
+            distanceToTarget: Math.round(Math.sqrt(distSq) * 10) / 10,
+            location: locationName,
+            position: currentPos,
+            simulationTime: simTime,
+          });
+
+          return {
+            success: true,
+            reason: `Arrived at ${resolvedTarget.name}`,
+            data: { arrived: true },
+          };
         }
 
         // Check if citizen is ALREADY actively navigating to the same target location
@@ -103,6 +182,7 @@ export class ActionExecutor {
             target: resolvedTarget.locationId,
             rawText: `move_to ${resolvedTarget.locationId}`,
             createdAt: Date.now(),
+            decisionId,
           },
           createdAt: Date.now(),
           status: 'EXECUTING' as any,
@@ -110,11 +190,31 @@ export class ActionExecutor {
 
         const started = navigationSystem.setIntention(navIntention, citizenId, currentPos);
         if (!started) {
+          agentEventLogger.logActionFailed({
+            agentId: citizenId,
+            decisionId,
+            toolName: tool.name,
+            reason: `Failed to initialize navigation toward ${targetStr}.`,
+            location: locationName,
+            position: currentPos,
+            simulationTime: simTime,
+          });
+
           return {
             success: false,
             reason: `Failed to initialize navigation toward ${targetStr}.`,
           };
         }
+
+        agentEventLogger.logMovementStarted({
+          agentId: citizenId,
+          decisionId,
+          targetLocationId: resolvedTarget.locationId,
+          targetName: resolvedTarget.name,
+          location: locationName,
+          position: currentPos,
+          simulationTime: simTime,
+        });
         break;
       }
       case 'SURVIVAL':
@@ -144,6 +244,22 @@ export class ActionExecutor {
 
     // 3. Execute World State & System Mutations
     const result = tool.execute(citizenId, args, currentPos);
+    const durationMs = Date.now() - startTime;
+
+    console.log(`[TOOL_RESULT] agent=${citizenId} decision=${decisionId} success=${result.success}`);
+    agentEventLogger.logToolResult({
+      agentId: citizenId,
+      decisionId,
+      toolName: tool.name,
+      success: result.success,
+      reason: result.reason,
+      data: result.data,
+      durationMs,
+      location: locationName,
+      position: currentPos,
+      simulationTime: simTime,
+    });
+
     return result;
   }
 }
