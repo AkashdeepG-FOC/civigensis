@@ -242,6 +242,4 @@ Contributions are welcome! If you would like to add new tools, expand village te
 
 ---
 
-## 📄 License
 
-Distributed under the MIT License. See `LICENSE` for more details.
