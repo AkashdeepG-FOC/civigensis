@@ -16,6 +16,19 @@ export class AgentLoopGuard {
   private maxHistory: number = 10;
   private consecutiveSameToolCount: number = 0;
   private consecutiveSameDestCount: number = 0;
+  private consecutiveSocialCount: number = 0;
+
+  private static SOCIAL_TOOLS = [
+    'talk',
+    'respond_to_citizen',
+    'ask',
+    'compliment',
+    'flirt',
+    'insult',
+    'greet',
+    'apologize',
+    'forgive',
+  ];
 
   public recordLocation(location: string) {
     const last = this.locationHistory[0];
@@ -28,7 +41,21 @@ export class AgentLoopGuard {
   }
 
   public recordToolCall(tool: string, args: Record<string, any>, success: boolean) {
+    const toolLower = (tool || '').toLowerCase();
+    const isSocial = AgentLoopGuard.SOCIAL_TOOLS.includes(toolLower);
+
     const last = this.toolHistory[0];
+    const lastToolLower = last ? (last.tool || '').toLowerCase() : '';
+    const lastWasSocial = AgentLoopGuard.SOCIAL_TOOLS.includes(lastToolLower);
+
+    if (isSocial && lastWasSocial) {
+      this.consecutiveSocialCount++;
+    } else if (isSocial) {
+      this.consecutiveSocialCount = 1;
+    } else {
+      this.consecutiveSocialCount = 0;
+    }
+
     if (last && last.tool === tool && JSON.stringify(last.arguments) === JSON.stringify(args)) {
       this.consecutiveSameToolCount++;
     } else {
@@ -45,6 +72,11 @@ export class AgentLoopGuard {
    * Detects potential oscillations or loops and generates constructive prompt warnings for LLM reasoning
    */
   public checkForLoopWarnings(): string | null {
+    // 0. Detect consecutive social dialogue loop
+    if (this.consecutiveSocialCount >= 3) {
+      return `CONVERSATION LOOP WARNING: You have executed social interaction tools ${this.consecutiveSocialCount} times in a row. You MUST conclude the conversation immediately with a polite farewell in your "speech" (e.g., "I need to get back to work now, see you later!") and choose a NON-SOCIAL action like "GO_TO", "HARVEST_CROP", "EAT", or "REST".`;
+    }
+
     // 1. Detect location oscillation (e.g., A -> B -> A -> B)
     if (this.locationHistory.length >= 4) {
       const loc0 = this.locationHistory[0].location;
@@ -77,5 +109,6 @@ export class AgentLoopGuard {
     this.toolHistory = [];
     this.consecutiveSameToolCount = 0;
     this.consecutiveSameDestCount = 0;
+    this.consecutiveSocialCount = 0;
   }
 }

@@ -1,6 +1,7 @@
 import { BenNeeds, WheatCropState, EatActionResult } from '../../types/benAI';
 import { CitizenId } from '../../types/citizen';
 import { worldSimulationEngine } from '../simulation/WorldSimulationEngine';
+import { economySystem } from './EconomySystem';
 
 export type WorldStateChangeListener = () => void;
 
@@ -125,6 +126,8 @@ class FarmingWorldState {
     needs.harvestedWheat += 3;
     needs.foodStock += 3;
     needs.energy = Math.max(0, needs.energy - 12);
+
+    economySystem.awardCredits(citizenId, 10, 'Harvested mature wheat crops');
 
     this.notify();
     return true;

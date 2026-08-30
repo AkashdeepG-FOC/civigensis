@@ -86,10 +86,10 @@ assert(step2 !== null && step2.action === 'WATER_CROP', 'After GO_TO completed, 
 
 // TEST 5: Minimal Safety-Oriented Fallback
 console.log('\n--- TEST 5: Minimal Safety-Oriented Fallback ---');
-// Import BenAIBrain instance to test fallback
-import { benAIBrain } from '../src/systems/ai/BenAIBrain.ts';
-const fallbackPlan = benAIBrain['generateAutonomousHeuristicPlan']('bens_farm', 'LLM offline');
-assert(fallbackPlan.plan.length === 1 && fallbackPlan.plan[0].action === 'INSPECT', 'Minimal fallback defaults to single safe observation (INSPECT) instead of a complex rule-based routine');
+import { benAIBrain } from '../src/systems/ai/CitizenAIBrain.ts';
+const fallbackDecision = benAIBrain.agent.cognitionEngine.agentSession['generateAdaptiveFallbackDecision']('LLM offline', benAIBrain.agent.cognitionEngine.memoryManager.getWorkingMemory(), 'bens_farm');
+assert(fallbackDecision !== null && fallbackDecision.immediate_behavior !== undefined, 'Minimal fallback generates open-ended adaptive fallback decision');
+
 
 console.log(`\n=== TEST SUMMARY: ${testsPassed} PASSED, ${testsFailed} FAILED ===`);
 if (testsFailed > 0) {

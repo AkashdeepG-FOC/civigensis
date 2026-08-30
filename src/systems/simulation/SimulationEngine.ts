@@ -5,7 +5,9 @@ import { isPointOnBridge, getBridgeDeckHeight } from '../../components/world/my/
 import { getDetectedGroundHeight, GroundQueryResult } from '../physics/GroundPhysics';
 import { worldMapStore } from '../navigation/WorldMapStore';
 import { CoordinateConverter } from '../navigation/CoordinateConverter';
-import { benAIBrain, julieAIBrain } from '../ai/BenAIBrain';
+import { benAIBrain, julieAIBrain } from '../ai/CitizenAIBrain';
+
+
 import { farmingWorldState } from '../ai/FarmingWorldState';
 import { worldSimulationEngine } from './WorldSimulationEngine';
 
@@ -50,9 +52,14 @@ class SimulationEngine {
       window.addEventListener('keydown', this.handleKeyDown);
       window.addEventListener('keyup', this.handleKeyUp);
     }
-    benAIBrain.setControlMode('AI');
-    julieAIBrain.setControlMode('AI');
+    try {
+      if (benAIBrain) benAIBrain.setControlMode('AI');
+      if (julieAIBrain) julieAIBrain.setControlMode('AI');
+    } catch {}
   }
+
+
+
 
   private handleKeyDown = (e: KeyboardEvent) => {
     this.keys[e.key.toLowerCase()] = true;

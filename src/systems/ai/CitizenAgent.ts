@@ -88,15 +88,26 @@ export class CitizenAgent {
         return;
       }
 
-      if (this.controlMode === 'AI' && !this.cognitionEngine.getIsBusy()) {
-        const dummyPos: Record<CitizenId, [number, number, number]> = {
-          ben: this.identity.id === 'ben' ? this.lastPos : [0, 0, 0],
-          julie: this.identity.id === 'julie' ? this.lastPos : [0, 0, 0],
-          ravi: this.identity.id === 'ravi' ? this.lastPos : [0, 0, 0],
-        };
-        console.log(`[EVENT_WAKEUP] [${this.identity.name.toUpperCase()}] Processing event "${evt.type}" (Id: ${evt.id})`);
-        this.cognitionEngine.think(this.lastPos, dummyPos, `Event: ${evt.type}`);
-        this.notify();
+      const isSocialEvent = evt.type.includes('TALK') || evt.type.includes('INTERACT') || evt.type.includes('ASK') || evt.type.includes('GREET') || evt.type.includes('HELP');
+      const requiresResponse = evt.payload?.requiresResponse !== false;
+
+      if (this.controlMode === 'AI') {
+        if ((isSocialEvent && requiresResponse) || !this.cognitionEngine.getIsBusy()) {
+          if (isSocialEvent && requiresResponse) {
+            navigationSystem.clearIntention(this.identity.id);
+            activityDurationManager.clearActivity(this.identity.id);
+          }
+          const dummyPos: Record<CitizenId, [number, number, number]> = {
+            ben: this.identity.id === 'ben' ? this.lastPos : [0, 0, 0],
+            julie: this.identity.id === 'julie' ? this.lastPos : [0, 0, 0],
+            ravi: this.identity.id === 'ravi' ? this.lastPos : [0, 0, 0],
+          };
+          const eventText = evt.description || `Event: ${evt.type}`;
+          console.log(`[EVENT_WAKEUP] [${this.identity.name.toUpperCase()}] Processing event "${eventText}" (Id: ${evt.id})`);
+          this.cognitionEngine.think(this.lastPos, dummyPos, eventText);
+          this.notify();
+
+        }
       }
     });
 

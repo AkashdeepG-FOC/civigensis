@@ -91,6 +91,14 @@ export class GoalSystem {
     }
   }
 
+  public completeActiveGoal(reason?: string) {
+    const active = this.getActiveGoal();
+    if (active) {
+      this.updateGoalStatus(active.id, 'COMPLETED', 100);
+      console.log(`[GOAL_SYSTEM] Completed active goal "${active.description}" (100%). Reason: ${reason || 'Task finished'}`);
+    }
+  }
+
   public getAllGoals(): AgentGoal[] {
     return Array.from(this.goals.values());
   }

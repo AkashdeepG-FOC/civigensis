@@ -10,6 +10,8 @@ import { agentEventLogger } from '../logging/AgentEventLogger';
 
 export class MemorySystem {
   private citizenId: CitizenId;
+  private soulEntries: string[] = [];
+  private memorySummaries: string[] = [];
   private episodicMemories: EpisodicMemoryItem[] = [];
   private semanticMemories: SemanticMemoryItem[] = [];
   private relationshipMemories: RelationshipMemoryItem[] = [];
@@ -18,6 +20,92 @@ export class MemorySystem {
 
   constructor(citizenId: CitizenId) {
     this.citizenId = citizenId;
+    // Default foundational soul entry anchors
+    if (citizenId === 'ben') {
+      this.soulEntries = [
+        'I believe hard work on the soil builds real community resilience.',
+        'Trust is earned through honest actions and evidence, not just talk.',
+      ];
+    } else if (citizenId === 'julie') {
+      this.soulEntries = [
+        'Creative craft and community warmth are essential to a living village.',
+        'Collaboration and social dialogue lead to sustainable prosperity.',
+      ];
+    }
+  }
+
+  // --- Soul Entries (Existential Core Convictions) ---
+  public addSoulEntry(conviction: string): boolean {
+    if (!conviction || this.soulEntries.includes(conviction)) return false;
+    this.soulEntries.push(conviction);
+    agentEventLogger.logMemory({
+      agentId: this.citizenId,
+      memoryType: 'reflection',
+      summary: `Soul Entry Added: "${conviction}"`,
+      location: 'cognition',
+      importance: 5,
+    });
+    return true;
+  }
+
+  public removeSoulEntry(conviction: string): boolean {
+    const idx = this.soulEntries.indexOf(conviction);
+    if (idx >= 0) {
+      this.soulEntries.splice(idx, 1);
+      return true;
+    }
+    return false;
+  }
+
+  public getSoulEntries(): string[] {
+    return [...this.soulEntries];
+  }
+
+  public getSoulEntriesPrompt(): string {
+    if (this.soulEntries.length === 0) return '- No explicit soul entries defined.';
+    return this.soulEntries.map((s) => `- CORE BELIEF: "${s}"`).join('\n');
+  }
+
+  // --- Memory Summarization (Cognitive Self-Care) ---
+  public performSelfCareSummarization(): { success: boolean; summaryCount: number; reason: string } {
+    if (this.episodicMemories.length < 5) {
+      return {
+        success: false,
+        summaryCount: 0,
+        reason: 'Insufficient episodic memories for summarization (minimum 5 required).',
+      };
+    }
+
+    const batchToSummarize = this.episodicMemories.slice(-5);
+    const summaryNarrative = `Condensed Narrative (${batchToSummarize.length} events): Agent engaged in key actions: ` +
+      batchToSummarize.map((m) => `${m.description} at ${m.location}`).join('; ');
+
+    this.memorySummaries.unshift(summaryNarrative);
+    if (this.memorySummaries.length > 20) {
+      this.memorySummaries.pop();
+    }
+
+    // Retain recent 10 episodic memories, archive older ones
+    this.episodicMemories = this.episodicMemories.slice(0, 10);
+
+    agentEventLogger.logMemory({
+      agentId: this.citizenId,
+      memoryType: 'reflection',
+      summary: summaryNarrative,
+      location: 'cognitive_self_care',
+      importance: 4,
+    });
+
+    return {
+      success: true,
+      summaryCount: this.memorySummaries.length,
+      reason: `Successfully consolidated memories into core summary narrative. Total summaries: ${this.memorySummaries.length}.`,
+    };
+  }
+
+  public getMemorySummariesPrompt(): string {
+    if (this.memorySummaries.length === 0) return '- No consolidated memory summaries yet.';
+    return this.memorySummaries.map((s) => `- SUMMARY: ${s}`).join('\n');
   }
 
   // --- Episodic Memory ---

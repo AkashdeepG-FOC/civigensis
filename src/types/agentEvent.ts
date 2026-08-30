@@ -1,13 +1,21 @@
 export type AgentEventType =
-  | 'PERCEPTION'
+  | 'EVENT_RECEIVED'
+  | 'MEMORY_RETRIEVED'
   | 'LLM_REQUEST'
   | 'LLM_RESPONSE'
+  | 'DECISION_CREATED'
+  | 'BEHAVIOR_RESOLVED'
+  | 'ACTION_EXECUTED'
+  | 'WORLD_STATE_UPDATED'
+  | 'MEMORY_UPDATED'
+  | 'PERCEPTION'
   | 'LLM_DECISION'
   | 'TOOL_CALL'
   | 'TOOL_RESULT'
   | 'ACTION_STARTED'
   | 'ACTION_COMPLETED'
   | 'ACTION_FAILED'
+  | 'ACTION_INTEGRITY_ERROR'
   | 'MOVEMENT_STARTED'
   | 'MOVEMENT_COMPLETED'
   | 'CONVERSATION_STARTED'
@@ -16,6 +24,7 @@ export type AgentEventType =
   | 'STATE_UPDATE'
   | 'MEMORY_CREATED'
   | 'RELATIONSHIP_UPDATED';
+
 
 export interface SimulationTimeInfo {
   day?: number;

@@ -6,6 +6,7 @@ import { navigationSystem } from '../../systems/ai/NavigationSystem';
 import { eventEngine } from '../../systems/ai/EventEngine';
 import { attentionEngine } from '../../systems/ai/AttentionEngine';
 import { taskInterruptManager } from '../../systems/ai/TaskInterruptManager';
+import { speechSystem } from '../../systems/speech/SpeechSystem';
 
 export const CitizenDebugPanel: React.FC = () => {
   const [selectedCitizen, setSelectedCitizen] = useState<CitizenId>('ben');
@@ -31,6 +32,7 @@ export const CitizenDebugPanel: React.FC = () => {
     attentionEngine.computeAttention(agent.identity, agent.needSystem.getNeeds(), activeGoal?.description)
   );
   const [interruptedTask, setInterruptedTask] = useState(taskInterruptManager.getInterruptedTask(selectedCitizen));
+  const [testSpeechText, setTestSpeechText] = useState('Hello everyone! Ready for another productive day in the village.');
 
   useEffect(() => {
     OllamaService.checkConnection().then((connected) => setIsConnected(connected));
@@ -238,6 +240,65 @@ export const CitizenDebugPanel: React.FC = () => {
         ) : (
           <div style={styles.idleText}>No active goal. Formulating intention...</div>
         )}
+      </div>
+
+      {/* Voice Speech & Audio Test Control */}
+      <div style={styles.sectionHeader}>MODEL VOICE SPEECH & AUDIO TEST</div>
+      <div style={{ ...styles.intentionBox, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <input
+          type="text"
+          value={testSpeechText}
+          onChange={(e) => setTestSpeechText(e.target.value)}
+          placeholder="Type sentence for model to speak..."
+          style={{
+            backgroundColor: '#0f172a',
+            color: '#f8fafc',
+            border: '1px solid #334155',
+            borderRadius: '6px',
+            padding: '6px 10px',
+            fontSize: '11px',
+            outline: 'none',
+            width: '100%',
+            boxSizing: 'border-box',
+          }}
+        />
+        <div style={{ display: 'flex', gap: '6px' }}>
+          <button
+            style={{
+              flex: 1,
+              backgroundColor: '#10b981',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '6px 10px',
+              fontSize: '11px',
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              speechSystem.speak(selectedCitizen, testSpeechText);
+            }}
+          >
+            🗣 Speak Spoken Line ({selectedCitizen.toUpperCase()})
+          </button>
+          <button
+            style={{
+              backgroundColor: '#ef4444',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '6px 10px',
+              fontSize: '11px',
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              speechSystem.stop(selectedCitizen);
+            }}
+          >
+            ⏹ Stop
+          </button>
+        </div>
       </div>
 
       {/* Current Tool Execution & Navigation */}

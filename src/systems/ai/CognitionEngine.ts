@@ -1,5 +1,8 @@
 import { StructuredDecision, CitizenIdentity } from '../../types/citizenAgent';
+import { MemoryManager } from './MemoryManager';
+import { AgentSession } from './AgentSession';
 import { NeedSystem } from './NeedSystem';
+
 import { BeliefSystem } from './BeliefSystem';
 import { MemorySystem } from './MemorySystem';
 import { GoalSystem } from './GoalSystem';
@@ -25,6 +28,11 @@ import { taskInterruptManager } from './TaskInterruptManager';
 import { TargetResolver } from './TargetResolver';
 
 import { EmotionSystem } from './EmotionSystem';
+import { speechSystem } from '../speech/SpeechSystem';
+import { socialInteractionSystem } from './SocialInteractionSystem';
+
+import { economySystem } from './EconomySystem';
+
 
 export class CognitionEngine {
   private identity: CitizenIdentity;
@@ -38,6 +46,23 @@ export class CognitionEngine {
   private loopGuard: AgentLoopGuard;
   private reflectionSystem: ReflectionSystem;
 
+  private _memoryManager?: MemoryManager;
+  private _agentSession?: AgentSession;
+
+  public get memoryManager(): MemoryManager {
+    if (!this._memoryManager) {
+      this._memoryManager = new MemoryManager(this.identity.id, this.identity);
+    }
+    return this._memoryManager;
+  }
+
+  public get agentSession(): AgentSession {
+    if (!this._agentSession) {
+      this._agentSession = new AgentSession(this.identity.id, this.memoryManager);
+    }
+    return this._agentSession;
+  }
+
   private isThinking: boolean = false;
   private lastReasoningTime: number = 0;
   private minReasoningIntervalMs: number = 2000;
@@ -45,6 +70,7 @@ export class CognitionEngine {
   private currentDecision: StructuredDecision | null = null;
   private fallbackLocationIndex: number = 0;
   private lastSocialTalkTime: number = 0;
+  private lastExecutedAction: { action: string; target: string; timestamp: number; success: boolean } | null = null;
 
   constructor(
     identity: CitizenIdentity,
@@ -69,6 +95,8 @@ export class CognitionEngine {
     this.loopGuard = loopGuard;
     this.reflectionSystem = reflectionSystem;
   }
+
+
 
   public getIsThinking(): boolean {
     return this.isThinking;
@@ -155,10 +183,13 @@ export class CognitionEngine {
 
       const topEvt = eventEngine.getHighestPriorityEvent(this.identity.id);
       let immediateEventSummary: string | null = null;
+      const socialTurns = socialInteractionSystem.getConsecutiveTurns(this.identity.id, otherId);
 
       if (topEvt && topEvt.priority >= 80) {
         const sourceName = topEvt.source === 'ben' ? 'Ben' : topEvt.source === 'julie' ? 'Julie' : topEvt.source;
-        immediateEventSummary = `${sourceName} directly spoke to ${this.identity.name}: "${topEvt.message || ''}". (Requires Response: YES, Event Priority: ${topEvt.priority})`;
+        const requiresResp = topEvt.requiresResponse !== false && socialTurns < 3;
+        const reqStr = requiresResp ? 'YES' : 'NO (Conversation turn limit reached - say goodbye & return to work)';
+        immediateEventSummary = `${sourceName} directly spoke to ${this.identity.name}: "${topEvt.message || ''}". (Requires Response: ${reqStr}, Exchange Turn: ${socialTurns})`;
 
         // Save current active lower-priority task before responding
         if (
@@ -178,6 +209,7 @@ export class CognitionEngine {
       }
 
       const needsSummary = this.needSystem.getMotivationalPressures(this.identity);
+      needsSummary.push(economySystem.getEconomyPromptSummary(this.identity.id));
       const beliefsSummary = this.beliefSystem.getBeliefsPromptSummary(5);
       const memoriesSummary = this.memorySystem.getRelevantMemoriesPrompt(perception.locationName);
       const goalSummary = this.goalSystem.getGoalsPromptSummary();
@@ -205,33 +237,36 @@ export class CognitionEngine {
           throw new Error(`Unknown citizen ID: ${this.identity.id}`);
       }
 
-      // 4. LLM Reasoning Call
-      let decision = await OllamaService.generateAutonomousDecision(
-        this.identity,
-        perception.locationName,
-        needsSummary,
-        beliefsSummary,
-        memoriesSummary,
-        goalSummary,
-        relationshipSummary,
-        toolsSummary,
-        perception.recentEvents,
-        loopWarning,
-        this.lastActionResultText,
-        nearbyCitizensSummary,
-        nearbyObjectsSummary,
-        config.llm,
-        attentionSummary,
-        immediateEventSummary
-      );
-
-      // 5. Fallback heuristic decision if Ollama is offline or unparseable
-      if (!decision) {
-        decision = this.generateFallbackDecision(perception.locationName, perception.nearbyCitizens.length > 0);
-        decision.decision_id = `DEC-FALLBACK-${Date.now()}`;
+      // 3.5 Check for Interrupted / Queued Task Resume on Arrival
+      let decision: StructuredDecision | null = null;
+      if (triggerReason.includes('Arrived')) {
+        const resumedTask = taskInterruptManager.resumeTaskIfValid(this.identity.id);
+        if (resumedTask) {
+          console.log(
+            `[COGNITION][RESUME_ON_ARRIVAL][${this.identity.name.toUpperCase()}] Resuming saved interaction '${resumedTask.tool}' after arriving at target.`
+          );
+          decision = resumedTask;
+          decision.decision_id = `DEC-RESUME-${Date.now()}`;
+        }
       }
 
-      // 6. Anti-Stagnation Override & Target Location / Citizen Locomotion Auto-Routing
+      // 4. LLM Reasoning Call via AgentSession (Dynamic Memory + Event-Driven)
+      if (!decision) {
+        decision = await this.agentSession.processEvent(
+          triggerReason,
+          perception.locationName,
+          currentPos
+        );
+      }
+
+
+      // 5. If Ollama decision failed or offline, log cognitive pause without hardcoded state machine steering
+      if (!decision) {
+        console.warn(`[COGNITION][${this.identity.name.toUpperCase()}] LLM decision unavailable or unparseable. Cognitive pause (no hardcoded state machine steering).`);
+        return;
+      }
+
+      // 6. Post-process facing and target resolution (without silent tool overrides)
       decision = this.postProcessDecision(decision, perception.locationName, loopWarning);
 
       this.currentDecision = decision;
@@ -267,6 +302,9 @@ Speech: "${decision.speech || decision.intention || 'Working in village'}"
 
       if (toolResult.success) {
         this.loopGuard.reset();
+        if (['talk', 'respond_to_citizen', 'compliment', 'ask', 'invite', 'trade'].includes(activeToolName.toLowerCase())) {
+          this.lastSocialTalkTime = Date.now();
+        }
       }
 
       this.lastActionResultText = `Tool "${activeToolName}": ${toolResult.reason} (Success: ${toolResult.success})`;
@@ -289,6 +327,14 @@ Speech: "${decision.speech || decision.intention || 'Working in village'}"
           'observation'
         );
       }
+
+      this.lastExecutedAction = {
+        action: decision.action || activeToolName,
+        target: decision.target || decision.arguments?.location || decision.arguments?.target || 'none',
+        timestamp: Date.now(),
+        success: toolResult.success,
+      };
+      this.clearCurrentDecision();
 
       // Consume processed social interaction event
       if (topEvt) {
@@ -325,132 +371,30 @@ Speech: "${decision.speech || decision.intention || 'Working in village'}"
       targetArg || (this.identity.id === 'ben' ? 'julie' : 'ben')
     ).toLowerCase() as CitizenId;
 
-    // 0. Priority Override: If active direct conversation event exists and LLM returned 'observe', override to 'respond_to_citizen'!
+    // 0. Facing Adjustment: If active direct conversation event exists and performing social action, face the speaker
     const topEvt = eventEngine.getHighestPriorityEvent(this.identity.id);
-    if (topEvt && topEvt.type === 'SOCIAL_INTERACTION' && (decision.tool === 'observe' || decision.tool === 'wait')) {
+    if (topEvt && topEvt.type === 'SOCIAL_INTERACTION' && isTargetInteractionTool) {
       const otherId = (topEvt.source || (this.identity.id === 'ben' ? 'julie' : 'ben')) as CitizenId;
-      const otherName = otherId === 'ben' ? 'Ben' : 'Julie';
-      console.log(`[COGNITION][PRIORITY_OVERRIDE] Overriding '${decision.tool}' to 'respond_to_citizen' due to active SOCIAL_INTERACTION from ${otherName}`);
-      return {
-        reasoning_summary: `${otherName} spoke to me directly. Prioritizing direct response over observation.`,
-        goal: `Respond to ${otherName}`,
-        intention: `Respond to ${otherName}`,
-        tool: 'respond_to_citizen',
-        arguments: { target: otherId, message: `I'm doing pretty well, ${otherName}. How are things with you?` },
-        expected_outcome: 'Social dialogue delivered',
-        confidence: 0.95,
-      };
+      try {
+        const state = simulationEngine.getState();
+        const otherPos = state.citizens[otherId]?.position;
+        if (otherPos) {
+          navigationSystem.setLookAtTarget(this.identity.id, otherPos);
+        }
+      } catch {}
     }
 
-    // 1. Generic Proximity Check for Citizens: If wanting to interact with a citizen out of range, walk to them first!
+    // 1. Target Facing: Rotate facing towards target citizen if performing social interaction
     if (isTargetInteractionTool && (targetCitizenId === 'ben' || targetCitizenId === 'julie')) {
       try {
         const state = simulationEngine.getState();
-        const myPos = state.citizens[this.identity.id].position;
-        const targetPos = state.citizens[targetCitizenId].position;
-
-        const dx = targetPos[0] - myPos[0];
-        const dy = targetPos[1] - myPos[1];
-        const dz = targetPos[2] - myPos[2];
-        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-        const currentToolLower = (decision.tool || decision.action || '').toLowerCase();
-        const requiredRange = ['hug', 'kiss', 'fight'].includes(currentToolLower) ? PHYSICAL_INTIMATE_RANGE : CITIZEN_INTERACTION_RANGE;
-
-        if (dist > requiredRange) {
-          const targetName = targetCitizenId === 'ben' ? 'Ben' : 'Julie';
-          console.log(
-            `[AI][APPROACH] [${this.identity.name.toUpperCase()}] ${targetName} is ${dist.toFixed(
-              1
-            )}m away (> ${requiredRange}m). Overriding '${decision.tool}' to 'move_to(${targetCitizenId})'`
-          );
-
-          // Rotate facing towards target citizen
-          navigationSystem.setLookAtTarget(this.identity.id, targetPos);
-
-          return {
-            ...decision,
-            tool: 'move_to',
-            arguments: { location: targetCitizenId, target: targetCitizenId },
-            intention: `Approach ${targetName} to ${decision.tool}`,
-            reasoning_summary: `${targetName} is ${dist.toFixed(1)}m away. Approaching target before executing ${decision.tool}.`,
-          };
-        } else {
-          // In range! Rotate directly to face target citizen
+        const targetPos = state.citizens[targetCitizenId]?.position;
+        if (targetPos) {
           navigationSystem.setLookAtTarget(this.identity.id, targetPos);
         }
       } catch (err) {
         console.warn(`[COGNITION][INTERACT_SEEK_ERR]:`, err);
       }
-    }
-
-    // 2. Semantic Location Auto-Routing & Redundant Location Movement Prevention
-    const textToCheck = `${decision.goal} ${decision.intention} ${decision.reasoning_summary}`.toLowerCase();
-    let targetLoc: string | null = null;
-    if (textToCheck.includes('village center') || textToCheck.includes('market') || textToCheck.includes('well')) targetLoc = 'village_center';
-    else if (textToCheck.includes('bakery')) targetLoc = 'julies_bakery';
-    else if (textToCheck.includes('farm') || textToCheck.includes('wheat field') || textToCheck.includes('crop field')) targetLoc = 'bens_farm';
-    else if (textToCheck.includes('river') || textToCheck.includes('water basin')) targetLoc = 'river';
-    else if (textToCheck.includes('house') || textToCheck.includes('cottage')) targetLoc = 'bens_house';
-
-    const requestedMoveLoc = decision.tool === 'move_to' ? (decision.arguments?.location || targetLoc) : null;
-    const canonicalCurrent = TargetResolver.resolveTarget(currentLocation)?.locationId;
-    const canonicalRequested = requestedMoveLoc ? TargetResolver.resolveTarget(requestedMoveLoc)?.locationId : null;
-
-    // Prevent redundant move_to if already at destination location
-    if (canonicalRequested && canonicalRequested === canonicalCurrent) {
-      const isCitizenTarget = ['ben', 'julie', 'ravi'].includes(canonicalRequested);
-      if (!isCitizenTarget) {
-        const isBen = this.identity.id === 'ben';
-        const alternateLocs = isBen
-          ? ['bens_farm', 'river', 'bens_house', 'julies_bakery']
-          : ['julies_bakery', 'river', 'bens_house', 'bens_farm'];
-        this.fallbackLocationIndex = (this.fallbackLocationIndex + 1) % alternateLocs.length;
-        const nextLoc = alternateLocs[this.fallbackLocationIndex];
-
-        console.log(`[COGNITION][ARRIVED_ROUTE] [${this.identity.name.toUpperCase()}] Already at ${currentLocation} (${canonicalCurrent}). Routing to next village destination '${nextLoc}'.`);
-        return {
-          ...decision,
-          tool: 'move_to',
-          arguments: { location: nextLoc },
-          intention: `Travel to ${nextLoc} to continue village routine`,
-        };
-      }
-    }
-
-    if (targetLoc && TargetResolver.resolveTarget(targetLoc)?.locationId !== canonicalCurrent && decision.tool !== 'move_to') {
-      console.log(
-        `[COGNITION][AUTO_ROUTE][${this.identity.name.toUpperCase()}] Overriding '${decision.tool}' to 'move_to(${targetLoc})' because character is currently at '${currentLocation}'`
-      );
-      return {
-        ...decision,
-        tool: 'move_to',
-        arguments: { location: targetLoc },
-        intention: `Travel to ${targetLoc} to pursue goal`,
-      };
-    }
-
-    // 3. Break Tool Stagnation if Loop Guard Alert Active
-    if (loopWarning && (decision.tool === 'observe' || decision.tool === 'wait')) {
-      const isBen = this.identity.id === 'ben';
-      const alternateLocs = isBen
-        ? ['bens_farm', 'river', 'bens_house', 'village_center']
-        : ['julies_bakery', 'river', 'village_center', 'bens_house'];
-      const defaultLoc = isBen ? 'bens_farm' : 'julies_bakery';
-      const nextLoc = alternateLocs.find((l) => l !== currentLocation) || defaultLoc;
-
-      console.warn(
-        `[COGNITION][ANTI_STAGNATION][${this.identity.name.toUpperCase()}] Breaking '${decision.tool}' stagnation loop -> Navigating to '${nextLoc}'`
-      );
-      return {
-        reasoning_summary: `Breaking stagnation loop. Navigating to ${nextLoc} to explore and engage in work activities.`,
-        goal: `Explore ${nextLoc}`,
-        intention: `Move to ${nextLoc}`,
-        tool: 'move_to',
-        arguments: { location: nextLoc },
-        expected_outcome: 'Arrival at new location with fresh work opportunities',
-        confidence: 0.85,
-      };
     }
 
     return decision;
@@ -501,6 +445,49 @@ Speech: "${decision.speech || decision.intention || 'Working in village'}"
         expected_outcome: 'Recovered energy',
         confidence: 0.95,
       };
+    }
+
+    // 1.5 Pending Direct Social Interaction Check
+    const topEvt = eventEngine.getHighestPriorityEvent(this.identity.id);
+    if (topEvt && topEvt.type === 'SOCIAL_INTERACTION' && topEvt.requiresResponse !== false && topEvt.priority >= 80) {
+      const sourceId = (topEvt.source || otherId) as CitizenId;
+      const sourceName = sourceId === 'ben' ? 'Ben' : 'Julie';
+
+      // Check if recent conversation memory exists with source citizen
+      const recentMemories = this.memorySystem.getRecentEpisodicMemories(5);
+      const chattedRecently = recentMemories.some((m) => m.description.toLowerCase().includes(sourceName.toLowerCase()));
+
+      if (chattedRecently) {
+        const farewellMessage = `Nice chatting with you ${sourceName}! I need to get back to my work now.`;
+        return {
+          goal: `Resume routine work`,
+          reason: `Concluded conversation with ${sourceName}.`,
+          action: 'GO_TO',
+          target: homeLoc,
+          speech: farewellMessage,
+          tool: 'move_to',
+          arguments: { location: homeLoc },
+          reasoning_summary: `Concluded chat with ${sourceName}. Heading to ${homeLoc}.`,
+          intention: `Return to routine at ${homeLoc}`,
+          expected_outcome: `Arrived at ${homeLoc}`,
+          confidence: 0.9,
+        };
+      } else {
+        const responseMessage = `Hi ${sourceName}! Good to see you. How are things going with you today?`;
+        return {
+          goal: `Respond to ${sourceName}`,
+          reason: `${sourceName} directly initiated a conversation.`,
+          action: 'RESPOND_TO_CITIZEN',
+          target: sourceId,
+          speech: responseMessage,
+          tool: 'respond_to_citizen',
+          arguments: { target: sourceId, message: responseMessage },
+          reasoning_summary: `Direct response to ${sourceName}.`,
+          intention: `Respond to ${sourceName}`,
+          expected_outcome: 'Social dialogue delivered',
+          confidence: 0.95,
+        };
+      }
     }
 
     // 2. Farming Work Needs Priority (Ben)
@@ -560,8 +547,8 @@ Speech: "${decision.speech || decision.intention || 'Working in village'}"
 
     // 3. Social Interaction Fallback
     const now = Date.now();
-    if (hasNearbyCitizen && now - this.lastSocialTalkTime > 25000) {
-      this.lastSocialTalkTime = now;
+    const socialTurns = socialInteractionSystem.getConsecutiveTurns(this.identity.id, otherId);
+    if (hasNearbyCitizen && now - this.lastSocialTalkTime > 60000 && socialTurns < 1) {
       return {
         goal: `Converse with ${otherName}`,
         reason: `Noticed nearby citizen ${otherName}. Exchanging community news.`,

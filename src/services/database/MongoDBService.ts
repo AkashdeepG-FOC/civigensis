@@ -1,4 +1,4 @@
-import { MongoClient, Db, Collection } from 'mongodb';
+import type { MongoClient, Db, Collection } from 'mongodb';
 import { AgentEvent } from '../../types/agentEvent';
 
 export class MongoDBService {
@@ -40,6 +40,12 @@ export class MongoDBService {
   }
 
   public async connect(): Promise<boolean> {
+    if (typeof window !== 'undefined') {
+      this.isConnected = false;
+      this.isConnecting = false;
+      return false;
+    }
+
     if (this.isConnected && this.client && this.db) {
       return true;
     }
@@ -58,10 +64,13 @@ export class MongoDBService {
 
     try {
       console.log(`[MongoDBService] Connecting to MongoDB at ${this.uri} (db: ${this.dbName})...`);
-      this.client = new MongoClient(this.uri, {
+      const mongodbModule = await import('mongodb');
+      const MongoClientCtor = mongodbModule.MongoClient;
+      this.client = new MongoClientCtor(this.uri, {
         serverSelectionTimeoutMS: 3000,
         connectTimeoutMS: 3000,
       } as any);
+
 
       await this.client.connect();
       this.db = this.client.db(this.dbName);
@@ -129,6 +138,75 @@ export class MongoDBService {
       return false;
     }
   }
+
+  public async saveWorkingMemory(agentId: string, memory: any): Promise<boolean> {
+    if (!this.isConnected || !this.db) {
+      const connected = await this.connect();
+      if (!connected || !this.db) return false;
+    }
+    try {
+      const col = this.db.collection('working_memory');
+      await col.updateOne(
+        { agent_id: agentId },
+        { $set: { agent_id: agentId, memory, updatedAt: new Date() } },
+        { upsert: true }
+      );
+      return true;
+    } catch (err: any) {
+      console.warn(`[MongoDBService] Failed to save working memory for ${agentId}:`, err?.message || err);
+      return false;
+    }
+  }
+
+  public async getWorkingMemory(agentId: string): Promise<any | null> {
+    if (!this.isConnected || !this.db) {
+      const connected = await this.connect();
+      if (!connected || !this.db) return null;
+    }
+    try {
+      const col = this.db.collection('working_memory');
+      const doc = await col.findOne({ agent_id: agentId });
+      return doc ? doc.memory : null;
+    } catch (err: any) {
+      console.warn(`[MongoDBService] Failed to fetch working memory for ${agentId}:`, err?.message || err);
+      return null;
+    }
+  }
+
+  public async saveEpisodicMemoryDoc(agentId: string, memoryItem: any): Promise<boolean> {
+    if (!this.isConnected || !this.db) {
+      const connected = await this.connect();
+      if (!connected || !this.db) return false;
+    }
+    try {
+      const col = this.db.collection('episodic_memory');
+      await col.insertOne({ agent_id: agentId, ...memoryItem, createdAt: new Date() });
+      return true;
+    } catch (err: any) {
+      console.warn(`[MongoDBService] Failed to save episodic memory for ${agentId}:`, err?.message || err);
+      return false;
+    }
+  }
+
+  public async saveAgentSession(agentId: string, sessionContext: any): Promise<boolean> {
+    if (!this.isConnected || !this.db) {
+      const connected = await this.connect();
+      if (!connected || !this.db) return false;
+    }
+    try {
+      const col = this.db.collection('agent_sessions');
+      await col.updateOne(
+        { agent_id: agentId },
+        { $set: { agent_id: agentId, sessionContext, updatedAt: new Date() } },
+        { upsert: true }
+      );
+      return true;
+    } catch (err: any) {
+      console.warn(`[MongoDBService] Failed to save agent session for ${agentId}:`, err?.message || err);
+      return false;
+    }
+  }
+
 
   public async getAgentTimeline(
     agentId: string,

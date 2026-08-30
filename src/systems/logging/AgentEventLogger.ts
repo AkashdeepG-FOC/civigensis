@@ -59,6 +59,163 @@ export class AgentEventLogger {
   }
 
   /**
+   * Helper: Log EVENT_RECEIVED
+   */
+  public logEventReceived(params: {
+    agentId: string;
+    agentName?: string;
+    decisionId?: string;
+    eventText: string;
+    location?: string;
+    simulationTime?: SimulationTimeInfo;
+  }): void {
+    this.log({
+      event_type: 'EVENT_RECEIVED',
+      agent_id: params.agentId,
+      agent_name: params.agentName || params.agentId,
+      decision_id: params.decisionId,
+      timestamp: new Date(),
+      simulation_time: params.simulationTime,
+      location: params.location,
+      metadata: { eventText: params.eventText },
+    });
+  }
+
+  /**
+   * Helper: Log MEMORY_RETRIEVED
+   */
+  public logMemoryRetrieved(params: {
+    agentId: string;
+    agentName?: string;
+    decisionId?: string;
+    summary: string;
+    retrievedCount: number;
+    simulationTime?: SimulationTimeInfo;
+  }): void {
+    this.log({
+      event_type: 'MEMORY_RETRIEVED',
+      agent_id: params.agentId,
+      agent_name: params.agentName || params.agentId,
+      decision_id: params.decisionId,
+      timestamp: new Date(),
+      simulation_time: params.simulationTime,
+      metadata: { summary: params.summary, retrievedCount: params.retrievedCount },
+    });
+  }
+
+  /**
+   * Helper: Log DECISION_CREATED
+   */
+  public logDecisionCreated(params: {
+    agentId: string;
+    agentName?: string;
+    decisionId: string;
+    decision: Record<string, any>;
+    simulationTime?: SimulationTimeInfo;
+  }): void {
+    this.log({
+      event_type: 'DECISION_CREATED',
+      agent_id: params.agentId,
+      agent_name: params.agentName || params.agentId,
+      decision_id: params.decisionId,
+      timestamp: new Date(),
+      simulation_time: params.simulationTime,
+      decision: params.decision as any,
+    });
+  }
+
+  /**
+   * Helper: Log BEHAVIOR_RESOLVED
+   */
+  public logBehaviorResolved(params: {
+    agentId: string;
+    agentName?: string;
+    decisionId: string;
+    behaviorText: string;
+    resolvedTool: string;
+    resolvedArgs: Record<string, any>;
+    simulationTime?: SimulationTimeInfo;
+  }): void {
+    this.log({
+      event_type: 'BEHAVIOR_RESOLVED',
+      agent_id: params.agentId,
+      agent_name: params.agentName || params.agentId,
+      decision_id: params.decisionId,
+      timestamp: new Date(),
+      simulation_time: params.simulationTime,
+      tool_name: params.resolvedTool,
+      tool_args: params.resolvedArgs,
+      metadata: { behaviorText: params.behaviorText },
+    });
+  }
+
+  /**
+   * Helper: Log ACTION_EXECUTED
+   */
+  public logActionExecuted(params: {
+    agentId: string;
+    agentName?: string;
+    decisionId: string;
+    toolName: string;
+    success: boolean;
+    reason: string;
+    simulationTime?: SimulationTimeInfo;
+  }): void {
+    this.log({
+      event_type: 'ACTION_EXECUTED',
+      agent_id: params.agentId,
+      agent_name: params.agentName || params.agentId,
+      decision_id: params.decisionId,
+      timestamp: new Date(),
+      simulation_time: params.simulationTime,
+      tool_name: params.toolName,
+      tool_response: { success: params.success, reason: params.reason },
+    });
+  }
+
+  /**
+   * Helper: Log WORLD_STATE_UPDATED
+   */
+  public logWorldStateUpdated(params: {
+    agentId: string;
+    agentName?: string;
+    decisionId?: string;
+    updates: Record<string, any>;
+    simulationTime?: SimulationTimeInfo;
+  }): void {
+    this.log({
+      event_type: 'WORLD_STATE_UPDATED',
+      agent_id: params.agentId,
+      agent_name: params.agentName || params.agentId,
+      decision_id: params.decisionId,
+      timestamp: new Date(),
+      simulation_time: params.simulationTime,
+      metadata: { updates: params.updates },
+    });
+  }
+
+  /**
+   * Helper: Log MEMORY_UPDATED
+   */
+  public logMemoryUpdated(params: {
+    agentId: string;
+    agentName?: string;
+    decisionId?: string;
+    summary: string;
+    simulationTime?: SimulationTimeInfo;
+  }): void {
+    this.log({
+      event_type: 'MEMORY_UPDATED',
+      agent_id: params.agentId,
+      agent_name: params.agentName || params.agentId,
+      decision_id: params.decisionId,
+      timestamp: new Date(),
+      simulation_time: params.simulationTime,
+      metadata: { summary: params.summary },
+    });
+  }
+
+  /**
    * Helper 1: Log LLM Request
    */
   public logLLMRequest(params: {
@@ -268,6 +425,49 @@ export class AgentEventLogger {
       location: params.location,
       position: pos,
       metadata: params.metadata,
+    };
+    this.log(event);
+  }
+
+  /**
+   * Helper 6b: Log Action Integrity Error
+   */
+  public logActionIntegrityError(params: {
+    agentId: string;
+    agentName?: string;
+    decisionId?: string;
+    toolName?: string;
+    reason: string;
+    expectedTarget?: string;
+    actualTarget?: string;
+    location?: string;
+    position?: Vector3D | [number, number, number];
+    simulationTime?: SimulationTimeInfo;
+    metadata?: Record<string, any>;
+  }): void {
+    const pos: Vector3D | undefined = Array.isArray(params.position)
+      ? { x: params.position[0], y: params.position[1], z: params.position[2] }
+      : params.position;
+
+    const event: AgentEvent = {
+      event_type: 'ACTION_INTEGRITY_ERROR',
+      agent_id: params.agentId,
+      agent_name: params.agentName || params.agentId,
+      decision_id: params.decisionId,
+      timestamp: new Date(),
+      simulation_time: params.simulationTime,
+      tool_name: params.toolName,
+      tool_response: {
+        success: false,
+        reason: params.reason,
+      },
+      location: params.location,
+      position: pos,
+      metadata: {
+        ...params.metadata,
+        expected_target: params.expectedTarget,
+        actual_target: params.actualTarget,
+      },
     };
     this.log(event);
   }

@@ -8,6 +8,7 @@ import { objectInteractionSystem } from './ObjectInteractionSystem';
 import { conflictSystem } from './ConflictSystem';
 import { TargetResolver } from './TargetResolver';
 
+
 export type ToolValidator = (
   citizenId: CitizenId,
   args: Record<string, any>,
@@ -282,13 +283,13 @@ this.registerTool({
     // ==========================================
     // 3. SOCIAL CAPABILITIES
     // ==========================================
-    const socialActions = ['help', 'invite', 'trade'];
+    const socialActions = ['talk', 'respond_to_citizen', 'ask', 'greet', 'help', 'invite', 'trade'];
     socialActions.forEach((act) => {
       this.registerTool({
         name: act,
         category: 'SOCIAL',
         description: `Perform ${act} with a nearby citizen`,
-        argumentsSchema: '{"target": "citizen_id"}',
+        argumentsSchema: '{"target": "citizen_id", "message": "speech_text"}',
         validate: (citizenId, args, currentPos) => socialInteractionSystem.validateSocialInteraction(citizenId, act, args, currentPos),
         execute: (citizenId, args, currentPos) => socialInteractionSystem.executeSocialInteraction(citizenId, act, args, currentPos),
       });
@@ -487,8 +488,134 @@ this.registerTool({
     });
 
     // ==========================================
-    // 9. IDLE CAPABILITIES
+    // 9. IDLE & COGNITIVE CAPABILITIES
     // ==========================================
+    this.registerTool({
+      name: 'add_soul_entry',
+      category: 'COGNITIVE',
+      description: 'Record an immutable core conviction, belief, or existential identity anchor (never summarized)',
+      argumentsSchema: '{"conviction": "core_belief_text"}',
+      validate: (citizenId, args) => {
+        if (!args || !args.conviction || typeof args.conviction !== 'string') {
+          return { valid: false, reason: 'add_soul_entry requires a conviction string.' };
+        }
+        return { valid: true, reason: 'Valid conviction entry.' };
+      },
+      execute: (citizenId, args) => {
+        import('./CitizenAIBrain').then(({ benAIBrain, julieAIBrain }) => {
+          const brain = citizenId === 'ben' ? benAIBrain : julieAIBrain;
+          brain.agent.memorySystem.addSoulEntry(args.conviction);
+        }).catch(() => {});
+        return {
+          success: true,
+          reason: `Recorded soul entry: "${args.conviction}"`,
+          memoryDescription: `Established core identity anchor: "${args.conviction}"`,
+          timeSpentMinutes: 0.1,
+        };
+      },
+    });
+
+    this.registerTool({
+      name: 'self_care',
+      category: 'COGNITIVE',
+      description: 'Consolidate cognitive load by batching and summarizing past episodic memories (at home)',
+      argumentsSchema: '{}',
+      validate: (citizenId, args, currentPos) => {
+        const loc = getSemanticLocationAtPosition(currentPos);
+        const isHome = loc === 'home' || (citizenId === 'ben' ? loc === 'bens_house' : loc === 'julies_farm' || loc === 'julies_bakery');
+        if (!isHome) {
+          return { valid: false, reason: 'self_care must be performed at your home location. Use move_to first.' };
+        }
+        return { valid: true, reason: 'At home location for cognitive self-care.' };
+      },
+      execute: (citizenId) => {
+        import('./CitizenAIBrain').then(({ benAIBrain, julieAIBrain }) => {
+          const brain = citizenId === 'ben' ? benAIBrain : julieAIBrain;
+          brain.agent.memorySystem.performSelfCareSummarization();
+        }).catch(() => {});
+        return {
+          success: true,
+          reason: 'Performed cognitive self-care',
+          memoryDescription: 'Performed cognitive self-care and memory summarization',
+          timeSpentMinutes: 0.2,
+        };
+      },
+    });
+
+
+    this.registerTool({
+      name: 'write_journal_entry',
+      category: 'COGNITIVE',
+      description: 'Write a reflective diary entry about recent events, feelings, and community observations',
+      argumentsSchema: '{"content": "journal_entry_text", "mood": "reflective"}',
+      validate: (citizenId, args) => {
+        if (!args || !args.content) return { valid: false, reason: 'Journal entry requires content text.' };
+        return { valid: true, reason: 'Valid journal entry.' };
+      },
+      execute: (citizenId, args) => ({
+        success: true,
+        reason: `Wrote journal entry: "${args.content.substring(0, 40)}..."`,
+        memoryDescription: `Recorded reflection in personal journal: "${args.content}"`,
+        timeSpentMinutes: 0.15,
+      }),
+    });
+
+    // ==========================================
+    // 10. GOVERNANCE & ECONOMY CAPABILITIES
+    // ==========================================
+    this.registerTool({
+      name: 'propose_community_rule',
+      category: 'GOVERNANCE',
+      description: 'Propose a new binding community rule, project initiative, or law for the village',
+      argumentsSchema: '{"title": "proposal_title", "description": "proposal_details"}',
+      validate: (citizenId, args) => {
+        if (!args || !args.title || !args.description) {
+          return { valid: false, reason: 'propose_community_rule requires title and description.' };
+        }
+        return { valid: true, reason: 'Valid community proposal.' };
+      },
+      execute: (citizenId, args) => ({
+        success: true,
+        reason: `Proposed community rule: "${args.title}"`,
+        memoryDescription: `Submitted village governance proposal: "${args.title}"`,
+        timeSpentMinutes: 0.2,
+      }),
+    });
+
+    this.registerTool({
+      name: 'vote_on_rule',
+      category: 'GOVERNANCE',
+      description: 'Cast a vote on an active community proposal (vote: FOR or AGAINST)',
+      argumentsSchema: '{"proposalId": "id_or_title", "vote": "FOR", "rationale": "reason_text"}',
+      validate: (citizenId, args) => {
+        if (!args || !args.vote) return { valid: false, reason: 'vote_on_rule requires a vote choice.' };
+        return { valid: true, reason: 'Valid vote.' };
+      },
+      execute: (citizenId, args) => ({
+        success: true,
+        reason: `Voted ${args.vote} on proposal "${args.proposalId || 'active proposal'}"`,
+        memoryDescription: `Cast vote ${args.vote} on community rule: ${args.rationale || ''}`,
+        timeSpentMinutes: 0.1,
+      }),
+    });
+
+    this.registerTool({
+      name: 'propose_trade',
+      category: 'ECONOMY',
+      description: 'Propose an item or resource trade exchange with another citizen',
+      argumentsSchema: '{"target": "julie", "offer": "wheat", "request": "bread"}',
+      validate: (citizenId, args) => {
+        if (!args || !args.target || !args.offer) return { valid: false, reason: 'Trade requires target and offer.' };
+        return { valid: true, reason: 'Valid trade proposal.' };
+      },
+      execute: (citizenId, args) => ({
+        success: true,
+        reason: `Proposed trade to ${args.target}: offering ${args.offer} for ${args.request || 'something in return'}`,
+        memoryDescription: `Offered trade to ${args.target}: ${args.offer}`,
+        timeSpentMinutes: 0.15,
+      }),
+    });
+
     this.registerTool({
       name: 'wait',
       category: 'IDLE',

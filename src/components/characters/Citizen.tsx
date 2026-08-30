@@ -1,9 +1,11 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF, useAnimations, useFBX } from '@react-three/drei';
-import { Group, Mesh, Box3 } from 'three';
+import { Group, Mesh, Bone } from 'three';
 import { SkeletonUtils } from 'three-stdlib';
 import { CitizenConfig, CitizenState, AnimationState } from '../../types/citizen';
+import { speechSystem, ActiveSpeech } from '../../systems/speech/SpeechSystem';
+import { SpeechBubble3D } from '../world/SpeechBubble3D';
 
 // Preload FBX animation assets for instant R3F availability
 useFBX.preload('/assets/animations/Breathing Idle.fbx');
@@ -11,6 +13,7 @@ useFBX.preload('/assets/animations/Walking.fbx');
 useFBX.preload('/assets/animations/Running.fbx');
 useFBX.preload('/assets/animations/Swimming.fbx');
 useFBX.preload('/assets/animations/Treading Water.fbx');
+useFBX.preload('/assets/animations/Talking.fbx');
 useFBX.preload('/assets/animations/Farming Pack/watering.fbx');
 useFBX.preload('/assets/animations/Farming Pack/pick fruit.fbx');
 useFBX.preload('/assets/animations/Farming Pack/plant a plant.fbx');
@@ -27,6 +30,17 @@ interface CitizenProps {
 export const Citizen: React.FC<CitizenProps> = ({ config, state, isSelected }) => {
   const groupRef = useRef<Group>(null);
   const sceneRef = useRef<Group>(null);
+  const headBoneRef = useRef<Bone | null>(null);
+
+  const [activeSpeech, setActiveSpeech] = useState<ActiveSpeech | null>(null);
+
+  // Subscribe to real-time speech synthesis system
+  useEffect(() => {
+    const unsubscribe = speechSystem.subscribe((map) => {
+      setActiveSpeech(map[config.id] || null);
+    });
+    return unsubscribe;
+  }, [config.id]);
 
   // Load character GLB model (Ben / Julie / Ravi)
   const { scene: rawScene, animations: glbAnimations } = useGLTF(config.modelPath);
@@ -40,6 +54,7 @@ export const Citizen: React.FC<CitizenProps> = ({ config, state, isSelected }) =
   const fbxRun = useFBX('/assets/animations/Running.fbx');
   const fbxSwim = useFBX('/assets/animations/Swimming.fbx');
   const fbxTread = useFBX('/assets/animations/Treading Water.fbx');
+  const fbxTalking = useFBX('/assets/animations/Talking.fbx');
   const fbxWatering = useFBX('/assets/animations/Farming Pack/watering.fbx');
   const fbxHarvest = useFBX('/assets/animations/Farming Pack/pick fruit.fbx');
   const fbxPlant = useFBX('/assets/animations/Farming Pack/plant a plant.fbx');
@@ -86,6 +101,14 @@ export const Citizen: React.FC<CitizenProps> = ({ config, state, isSelected }) =
     clip.name = 'TreadWater';
     return clip;
   }, [fbxTread]);
+
+  // Retarget Talking animation clip
+  const talkClip = useMemo(() => {
+    if (!fbxTalking?.animations?.length) return null;
+    const clip = fbxTalking.animations[0].clone();
+    clip.name = 'Talk';
+    return clip;
+  }, [fbxTalking]);
 
   // Retarget Farming Pack animation clips
   const waterCropClip = useMemo(() => {
@@ -145,6 +168,7 @@ export const Citizen: React.FC<CitizenProps> = ({ config, state, isSelected }) =
     if (runClip) list.push(runClip);
     if (swimClip) list.push(swimClip);
     if (treadClip) list.push(treadClip);
+    if (talkClip) list.push(talkClip);
     if (waterCropClip) list.push(waterCropClip);
     if (harvestCropClip) list.push(harvestCropClip);
     if (plantCropClip) list.push(plantCropClip);
@@ -160,6 +184,7 @@ export const Citizen: React.FC<CitizenProps> = ({ config, state, isSelected }) =
     runClip,
     swimClip,
     treadClip,
+    talkClip,
     waterCropClip,
     harvestCropClip,
     plantCropClip,
@@ -171,24 +196,30 @@ export const Citizen: React.FC<CitizenProps> = ({ config, state, isSelected }) =
 
   const { actions } = useAnimations(allClips, sceneRef);
 
-  // Enable shadow casting and receiving on model meshes
+  // Enable shadow casting & discover head bone reference
   useEffect(() => {
     scene.traverse((child) => {
       if ((child as Mesh).isMesh) {
         child.castShadow = true;
         child.receiveShadow = true;
       }
+      if (child.type === 'Bone' && (child.name.toLowerCase().includes('head') || child.name.toLowerCase().includes('neck'))) {
+        headBoneRef.current = child as Bone;
+      }
     });
   }, [scene]);
 
-  // Handle smooth animation state transitions
+  // Handle smooth animation state transitions (including Talking gesture animation)
   useEffect(() => {
+    const isSpeaking = activeSpeech?.isSpeaking;
+
     const actionNameMap: Record<string, string> = {
-      IDLE: 'Idle',
+      IDLE: isSpeaking ? 'Talk' : 'Idle',
       WALK: 'Walk',
       RUN: 'Run',
       SWIM: 'Swim',
       TREAD_WATER: 'TreadWater',
+      TALK: 'Talk',
       WATER_CROP: 'WaterCrop',
       HARVEST_CROP: 'HarvestCrop',
       PLANT_CROP: 'PlantCrop',
@@ -199,12 +230,12 @@ export const Citizen: React.FC<CitizenProps> = ({ config, state, isSelected }) =
       WHEELBARROW: 'Wheelbarrow',
     };
 
-    const targetName = actionNameMap[state.animState] || 'Idle';
+    let targetName = actionNameMap[state.animState] || (isSpeaking ? 'Talk' : 'Idle');
 
     // Priority 1: Direct exact match in actions map
     let targetAction = actions[targetName];
 
-    // Priority 2: Case-insensitive search preferring native GLB embedded clips (not 'FBX...')
+    // Priority 2: Case-insensitive search preferring native GLB embedded clips
     if (!targetAction) {
       const keys = Object.keys(actions);
       const nativeKey = keys.find(
@@ -215,12 +246,17 @@ export const Citizen: React.FC<CitizenProps> = ({ config, state, isSelected }) =
       }
     }
 
-    // Priority 3: For IDLE or generic standing on NPC.glb, use native upright clip 'mixamo.com'
+    // Priority 3: Fallback for Talk
+    if (!targetAction && (targetName === 'Talk' || isSpeaking)) {
+      targetAction = actions['Talk'] || actions['FBXIdle'] || actions['Idle'];
+    }
+
+    // Priority 4: For IDLE or generic standing on NPC.glb, use native upright clip 'mixamo.com'
     if (!targetAction && (state.animState === 'IDLE' || targetName === 'Idle')) {
       targetAction = actions['mixamo.com'] || actions['Idle'] || actions['FBXIdle'];
     }
 
-    // Priority 4: Fallback for locomotion (WALK / RUN)
+    // Priority 5: Fallback for locomotion (WALK / RUN)
     if (!targetAction) {
       if (state.animState === 'WALK' || targetName === 'Walk') {
         targetAction = actions['FBXWalk'] || actions['mixamo.com'] || actions['Idle'];
@@ -229,7 +265,7 @@ export const Citizen: React.FC<CitizenProps> = ({ config, state, isSelected }) =
       }
     }
 
-    // Priority 5: Ultimate fallback to first available action
+    // Ultimate fallback
     if (!targetAction) {
       const keys = Object.keys(actions);
       if (keys.length > 0) {
@@ -248,20 +284,42 @@ export const Citizen: React.FC<CitizenProps> = ({ config, state, isSelected }) =
 
       targetAction.reset().fadeIn(0.25).play();
     }
-  }, [state.animState, actions]);
+  }, [state.animState, activeSpeech?.isSpeaking, actions]);
 
-  // Keep character model firmly grounded on top of terrain plane without negative Y drift
-  useFrame(() => {
+  // Frame tick: Procedural head bobbing & mouth movement during speech + terrain position locking
+  useFrame((_, delta) => {
     if (!groupRef.current || !sceneRef.current) return;
 
     const isSwimming = state.animState === 'SWIM' || state.animState === 'TREAD_WATER';
     if (isSwimming) {
       sceneRef.current.position.y = 0.1;
-      return;
+    } else {
+      sceneRef.current.position.y = 0;
     }
 
-    // Lock local primitive Y position at 0 to ensure character model never sinks under the floor
-    sceneRef.current.position.y = 0;
+    // Procedural speech animation: head nodding & jaw/mouth morph target inflations
+    if (activeSpeech?.isSpeaking) {
+      const mouthAmount = activeSpeech.mouthOpenAmount;
+      const headNod = Math.sin(Date.now() * 0.012) * 0.06 * mouthAmount;
+
+      if (headBoneRef.current) {
+        headBoneRef.current.rotation.x += (headNod - headBoneRef.current.rotation.x) * Math.min(1, delta * 15);
+      }
+
+      // Traversal for morph target mouth/jaw animation if model supports morphTargets
+      scene.traverse((child) => {
+        if ((child as Mesh).isMesh && (child as Mesh).morphTargetInfluences) {
+          const mesh = child as Mesh;
+          const dict = mesh.morphTargetDictionary;
+          if (dict) {
+            const jawOpenIdx = dict['jawOpen'] ?? dict['mouthOpen'] ?? dict['viseme_aa'] ?? dict['vrc.v_aa'];
+            if (jawOpenIdx !== undefined && mesh.morphTargetInfluences) {
+              mesh.morphTargetInfluences[jawOpenIdx] = mouthAmount * 0.75;
+            }
+          }
+        }
+      });
+    }
   });
 
   return (
@@ -271,6 +329,11 @@ export const Citizen: React.FC<CitizenProps> = ({ config, state, isSelected }) =
       rotation={[0, state.rotationY, 0]}
     >
       <primitive ref={sceneRef} object={scene} />
+
+      {/* Floating 3D Speech Bubble Overhead */}
+      {activeSpeech && activeSpeech.isSpeaking && (
+        <SpeechBubble3D citizenId={config.id} speech={activeSpeech} />
+      )}
 
       {/* Selection indicator ring under character feet */}
       {isSelected && (
@@ -284,4 +347,5 @@ export const Citizen: React.FC<CitizenProps> = ({ config, state, isSelected }) =
 };
 
 export default Citizen;
+
 

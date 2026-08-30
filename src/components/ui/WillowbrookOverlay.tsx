@@ -9,6 +9,7 @@ import { MapEditorModal } from './MapEditorModal';
 import { worldMapStore } from '../../systems/navigation/WorldMapStore';
 import { raviNPCBrain } from '../../systems/npc/RaviNPCBrain';
 import { RaviNPCStateData } from '../../systems/npc/raviState';
+import { speechSystem } from '../../systems/speech/SpeechSystem';
 
 interface WillowbrookOverlayProps {
   simState: SimulationState;
@@ -25,6 +26,7 @@ export const WillowbrookOverlay: React.FC<WillowbrookOverlayProps> = ({
   const [worldState, setWorldState] = useState<WorldState>(worldSimulationEngine.getState());
   const [raviState, setRaviState] = useState<RaviNPCStateData>(raviNPCBrain.getStateData());
   const [showAIPerception, setShowAIPerception] = useState(false);
+  const [isAudioMuted, setIsAudioMuted] = useState(speechSystem.isMuted());
 
   useEffect(() => {
     const unsubscribe = worldSimulationEngine.subscribe((newState) => {
@@ -100,6 +102,23 @@ export const WillowbrookOverlay: React.FC<WillowbrookOverlayProps> = ({
               </button>
             );
           })}
+
+          <button
+            style={{
+              ...styles.speedBtn,
+              backgroundColor: isAudioMuted ? '#991b1b' : '#059669',
+              color: '#ffffff',
+              marginLeft: '6px',
+            }}
+            onClick={() => {
+              const newMuted = !isAudioMuted;
+              speechSystem.setMuted(newMuted);
+              setIsAudioMuted(newMuted);
+            }}
+            title={isAudioMuted ? 'Voice Audio Muted - Click to Unmute' : 'Voice Audio Active - Click to Mute'}
+          >
+            {isAudioMuted ? '🔇 Muted' : '🔊 Voice On'}
+          </button>
         </div>
 
         {/* Weather Metrics (Chennai 13.0827, 80.2707 Reference) */}

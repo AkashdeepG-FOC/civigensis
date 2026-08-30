@@ -37,7 +37,7 @@ export class PerceptionEngine {
       const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
       if (dist <= 35.0) {
-        const otherName = otherId === 'ben' ? 'Ben' : 'Julie';
+        const otherName = otherId === 'ben' ? 'Ben' : otherId === 'julie' ? 'Julie' : otherId === 'ravi' ? 'Ravi' : String(otherId);
         const otherLoc = getSemanticLocationAtPosition(pos);
         const rel = selfAgent.relationshipSystem.getRelationship(otherId);
 

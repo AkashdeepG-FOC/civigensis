@@ -1,13 +1,22 @@
 import { CitizenId } from '../../types/citizen';
 import { ToolResult } from '../../types/citizenAgent';
-import { benAIBrain, julieAIBrain } from './CitizenAIBrain';
 import { simulationEngine } from '../simulation/SimulationEngine';
 import { worldEventBus } from '../simulation/WorldEventBus';
 import { CITIZEN_INTERACTION_RANGE, PHYSICAL_INTIMATE_RANGE } from './InteractionConstants';
 import { eventEngine } from './EventEngine';
+import { navigationSystem } from './NavigationSystem';
+import { activityDurationManager } from '../simulation/ActivityDurationManager';
+import { speechSystem } from '../speech/SpeechSystem';
+import { TextSimilarity } from './TextSimilarity';
+
+interface ConversationSession {
+  consecutiveTurns: number;
+  lastInteractionTime: number;
+}
 
 export class SocialInteractionSystem {
   private static instance: SocialInteractionSystem;
+  private conversationSessions: Map<string, ConversationSession> = new Map();
 
   constructor() { }
 
@@ -18,13 +27,42 @@ export class SocialInteractionSystem {
     return SocialInteractionSystem.instance;
   }
 
-  private getAgent(id: CitizenId) {
-    return id === 'ben' ? benAIBrain.agent : julieAIBrain.agent;
+  private getPairKey(actorId: CitizenId, targetId: CitizenId): string {
+    return [actorId, targetId].sort().join(':');
   }
 
+  public getConsecutiveTurns(actorId: CitizenId, targetId: CitizenId): number {
+    const key = this.getPairKey(actorId, targetId);
+    const session = this.conversationSessions.get(key);
+    if (!session) return 0;
+    if (Date.now() - session.lastInteractionTime > 45000) {
+      session.consecutiveTurns = 0;
+      return 0;
+    }
+    return session.consecutiveTurns;
+  }
+
+  public resetConversationSession(actorId: CitizenId, targetId: CitizenId) {
+    const key = this.getPairKey(actorId, targetId);
+    this.conversationSessions.delete(key);
+  }
+
+  private getAgent(id: CitizenId) {
+    try {
+      const { benAIBrain, julieAIBrain } = require('./CitizenAIBrain');
+      return id === 'ben' ? benAIBrain?.agent : julieAIBrain?.agent;
+    } catch {
+      return null;
+    }
+  }
+
+
   private getTargetId(actorId: CitizenId, args: Record<string, any>): CitizenId {
-    const rawTarget = args?.target || args?.citizenId || (actorId === 'ben' ? 'julie' : 'ben');
-    return String(rawTarget).toLowerCase().includes('julie') ? 'julie' : 'ben';
+    const rawTarget = String(args?.target || args?.citizenId || args?.recipient || args?.victim || (actorId === 'ben' ? 'julie' : 'ben')).toLowerCase();
+    if (rawTarget.includes('ravi')) return 'ravi';
+    if (rawTarget.includes('julie')) return 'julie';
+    if (rawTarget.includes('ben')) return 'ben';
+    return actorId === 'ben' ? 'julie' : 'ben';
   }
 
   private getDistance(posA: [number, number, number], posB: [number, number, number]): number {
@@ -58,7 +96,7 @@ export class SocialInteractionSystem {
     const maxDistance = isPhysicalIntimate ? PHYSICAL_INTIMATE_RANGE : CITIZEN_INTERACTION_RANGE;
 
     if (dist > maxDistance) {
-      const targetName = targetId === 'ben' ? 'Ben' : 'Julie';
+      const targetName = targetId === 'ben' ? 'Ben' : targetId === 'julie' ? 'Julie' : targetId === 'ravi' ? 'Ravi' : String(targetId);
       return {
         valid: false,
         reason: `${targetName} is out of interaction range (${dist.toFixed(1)}m away, max ${maxDistance}m).`,
@@ -112,7 +150,7 @@ export class SocialInteractionSystem {
         targetAgent.memorySystem.addEpisodicMemory(`${actorName} tried to ${actLower} me, but I rejected them.`, location, -0.2);
 
         // Immediate wake-up for target citizen to react autonomously
-        this.triggerTargetReaction(targetId, `${actorName} tried to ${actLower} you, but you rejected them.`);
+        this.triggerTargetReaction(targetId, actorId, `${actorName} tried to ${actLower} you, but you rejected them.`);
 
         return {
           success: false,
@@ -276,25 +314,73 @@ export class SocialInteractionSystem {
     });
 
     const dialogueText = args.message || args.speech || args.question || summaryText;
+
+    if (dialogueText && typeof window !== 'undefined') {
+      speechSystem.speak(actorId, dialogueText);
+    }
+
+    // Update conversation session turn tracker
+    const pairKey = this.getPairKey(actorId, targetId);
+    let session = this.conversationSessions.get(pairKey);
+    const now = Date.now();
+
+    if (!session || now - session.lastInteractionTime > 45000) {
+      session = { consecutiveTurns: 1, lastInteractionTime: now };
+    } else {
+      session.consecutiveTurns++;
+      session.lastInteractionTime = now;
+    }
+    this.conversationSessions.set(pairKey, session);
+
+    const isParting = /goodbye|bye|see you|later|gotta go|have to go|back to work|catch you|take care|have a good day/i.test(dialogueText);
+    const isQuestion = actLower === 'ask' || dialogueText.includes('?');
+
+    // Check repetition against actor's recent conversation memories
+    const recentActorMemories = actorAgent.memorySystem.getRecentEpisodicMemories(6).map((m: any) => m.description);
+    const repCheck = TextSimilarity.isRepetitiveMessage(dialogueText, recentActorMemories);
+
+    // Break ping-pong reaction loop if conversation reached turn limit (>= 3), contains parting, or is repetitive
+    let requiresResponse = true;
+    let eventPriority = 80;
+
+    if (session.consecutiveTurns >= 3 || isParting || repCheck.isRepetitive) {
+      requiresResponse = false;
+      eventPriority = 30;
+      console.log(
+        `[CONVERSATION_GUARD] Ending dialogue ping-pong loop between ${actorName} & ${targetName} (Turns: ${session.consecutiveTurns}, Parting: ${isParting}, Repetitive: ${repCheck.isRepetitive}).`
+      );
+      // Consume pending social events to prevent leftover triggers
+      eventEngine.consumeAllSocialEvents(actorId);
+      eventEngine.consumeAllSocialEvents(targetId);
+    } else {
+      requiresResponse = true;
+      eventPriority = isQuestion ? 90 : 80;
+    }
+
     eventEngine.pushEvent({
       type: 'SOCIAL_INTERACTION',
       target: targetId,
       source: actorId,
       message: dialogueText,
-      requiresResponse: true,
-      priority: 90,
+      requiresResponse,
+      priority: eventPriority,
     });
 
-    // 4. Modify Relationships
+    // 4. Modify Relationships & Fulfill Social Needs
     actorAgent.relationshipSystem.modifyRelationship(targetId, actorRelDeltas, actLower);
     targetAgent.relationshipSystem.modifyRelationship(actorId, targetRelDeltas, actLower);
+
+    actorAgent.needSystem.modifyNeed('socialConnection', 30);
+    actorAgent.needSystem.modifyNeed('belonging', 15);
+    targetAgent.needSystem.modifyNeed('socialConnection', 30);
+    targetAgent.needSystem.modifyNeed('belonging', 15);
 
     // 5. Store Perspective-Aware Memories
     actorAgent.memorySystem.addEpisodicMemory(actorMemoryText, location, 0.3);
     targetAgent.memorySystem.addEpisodicMemory(targetMemoryText, location, 0.3);
 
     // 6. Update Target Citizen's Perception & Trigger Autonomous LLM Reaction
-    this.triggerTargetReaction(targetId, summaryText);
+    this.triggerTargetReaction(targetId, actorId, summaryText, requiresResponse);
 
     return {
       success: true,
@@ -309,18 +395,32 @@ export class SocialInteractionSystem {
     };
   }
 
-  private triggerTargetReaction(targetId: CitizenId, eventSummary: string) {
+  private triggerTargetReaction(targetId: CitizenId, actorId: CitizenId, eventSummary: string, requiresResponse: boolean = true) {
+    if (!requiresResponse) return;
+
     setTimeout(() => {
       const targetAgent = this.getAgent(targetId);
-      if (targetAgent.getControlMode() === 'AI' && !targetAgent.cognitionEngine.getIsBusy()) {
+      if (targetAgent && targetAgent.getControlMode() === 'AI') {
+        // Interrupt current navigation or activity duration so citizen stops and responds
+        navigationSystem.clearIntention(targetId);
+        activityDurationManager.clearActivity(targetId);
+
+        try {
+          const state = simulationEngine.getState();
+          const speakerPos = state.citizens[actorId]?.position;
+          if (speakerPos) {
+            navigationSystem.setLookAtTarget(targetId, speakerPos);
+          }
+        } catch {}
+
         const dummyPos = {
-          ben: simulationEngine.getState().citizens.ben.position,
-          julie: simulationEngine.getState().citizens.julie.position,
-          ravi: simulationEngine.getState().citizens.ravi.position,
+          ben: simulationEngine.getState().citizens.ben?.position || [0, 0, 0],
+          julie: simulationEngine.getState().citizens.julie?.position || [0, 0, 0],
+          ravi: simulationEngine.getState().citizens.ravi?.position || [0, 0, 0],
         };
-        targetAgent.cognitionEngine.think(dummyPos[targetId], dummyPos, `Autonomous Reaction: ${eventSummary}`);
+        targetAgent.cognitionEngine.think(dummyPos[targetId] || [0, 0, 0], dummyPos, `Autonomous Reaction: ${eventSummary}`);
       }
-    }, 400);
+    }, 300);
   }
 }
 

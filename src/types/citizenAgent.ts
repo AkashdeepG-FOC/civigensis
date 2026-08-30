@@ -194,7 +194,10 @@ export type ToolCategory =
   | 'WORLD'
   | 'CONFLICT'
   | 'EMOTIONAL'
-  | 'IDLE';
+  | 'IDLE'
+  | 'COGNITIVE'
+  | 'GOVERNANCE'
+  | 'ECONOMY';
 
 export interface ToolResult {
   success: boolean;
@@ -213,19 +216,76 @@ export interface StructuredDecision {
   decision_id?: string;
   goal: string;
   reason?: string;
-  action?: 'GO_TO' | 'COLLECT_WATER' | 'WATER_CROP' | 'HARVEST_CROP' | 'EAT' | 'REST' | 'INSPECT' | 'TALK' | 'EXPLORE' | 'WAIT' | string;
+  intention?: string;
+  immediate_behavior?: string;
   target?: string;
-  expected_next_action?: string;
+  next?: string;
   speech?: string;
 
-  // Internal Execution Mapping Fields
-  reasoning_summary?: string;
-  intention?: string;
+  // Backward-compatibility & execution mapping fields
+  action?: string;
+  expected_next_action?: string;
   tool?: string;
   arguments?: Record<string, any>;
+  resolvedTool?: string;
+  resolvedArguments?: Record<string, any>;
+  reasoning_summary?: string;
   expected_outcome?: string;
   confidence?: number;
 }
+
+export interface CoreMemory {
+  agentId: CitizenId;
+  identity: CitizenIdentity;
+  coreBeliefs: string[]; // Soul entries
+  longTermGoals: string[];
+}
+
+export interface WorkingMemory {
+  goal: string;
+  reason: string;
+  intention: string;
+  immediate_behavior: string;
+  target: string;
+  next: string;
+  current_activity: string;
+  current_location: string;
+  active_plan?: string[];
+  interrupted_plan?: {
+    goal: string;
+    intention: string;
+    target: string;
+    next: string;
+    interruptedAt: string;
+  } | null;
+  lastUpdated: string;
+}
+
+export interface WorldMemoryFact {
+  id: string;
+  category: 'location' | 'weather' | 'market' | 'citizen' | 'object' | 'relationship' | 'general';
+  fact: string;
+  value?: any;
+  timestamp: string;
+  lastVerified: string;
+}
+
+export interface RecentEventItem {
+  id: string;
+  event: string;
+  timestamp: string;
+  source?: string;
+}
+
+export interface AgentSessionContext {
+  agentId: CitizenId;
+  coreMemory: CoreMemory;
+  workingMemory: WorkingMemory;
+  worldFacts: WorldMemoryFact[];
+  episodicMemories: EpisodicMemoryItem[];
+  recentEvents: RecentEventItem[];
+}
+
 
 export type CitizenEventType =
   | 'LIFE_THREAT'
